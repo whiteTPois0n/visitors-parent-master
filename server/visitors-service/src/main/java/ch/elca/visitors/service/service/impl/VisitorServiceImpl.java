@@ -1,5 +1,6 @@
 package ch.elca.visitors.service.service.impl;
 
+import ch.elca.visitors.persistence.entity.QOrganiser;
 import ch.elca.visitors.persistence.entity.QVisitor;
 import ch.elca.visitors.persistence.entity.Visitor;
 import ch.elca.visitors.persistence.repository.VisitorRepository;
@@ -7,11 +8,11 @@ import ch.elca.visitors.persistence.repository.VisitorTypeRepository;
 import ch.elca.visitors.service.dto.VisitorDto;
 import ch.elca.visitors.service.exception.ResourceNotFoundException;
 import ch.elca.visitors.service.mapper.VisitorMapper;
-import ch.elca.visitors.service.mapper.VisitorTypeMapper;
 import ch.elca.visitors.service.service.VisitorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,13 +22,13 @@ public class VisitorServiceImpl implements VisitorService {
 
     private final VisitorRepository visitorRepository;
     private final VisitorMapper visitorMapper;
-    private final VisitorTypeMapper visitorTypeMapper;
+    //    private final VisitorTypeMapper visitorTypeMapper;
     private final VisitorTypeRepository visitorTypeRepository;
 
 
     public VisitorDto addVisitor(VisitorDto visitorDto) {
         var visitor = visitorMapper.mapToEntity(visitorDto);
-        var checkVisitorType = visitorTypeRepository.findById(visitorDto.getVisitorType().getId()).orElseThrow(() -> new ResourceNotFoundException("Incorrect visitor type id"));
+        visitorTypeRepository.findById(visitorDto.getVisitorType().getId()).orElseThrow(() -> new ResourceNotFoundException("Incorrect visitor type id"));
 
         visitor.setStatus(true);
         var saved = visitorRepository.save(visitor);
@@ -52,7 +53,7 @@ public class VisitorServiceImpl implements VisitorService {
 
     public VisitorDto updateVisitor(VisitorDto visitorDto) {
 
-        var checkVisitorType= visitorTypeRepository.findById(visitorDto.getVisitorType().getId()).orElseThrow(() -> new ResourceNotFoundException("Incorrect visitor type id"));
+        var checkVisitorType = visitorTypeRepository.findById(visitorDto.getVisitorType().getId()).orElseThrow(() -> new ResourceNotFoundException("Incorrect visitor type id"));
 
 
         return visitorRepository.findById(visitorDto.getId())
@@ -81,13 +82,26 @@ public class VisitorServiceImpl implements VisitorService {
     }
 
     @Override
-    public List<VisitorDto> findVisitorByLastName(String lastName) {
-        var visitors = (List<Visitor>) visitorRepository.findAll(QVisitor.visitor.lastName.eq(lastName));
+    public List<VisitorDto> findVisitorByLastName(String lastName, String firstName) {
 
+        var visitor = QVisitor.visitor;
+        var organiser = QOrganiser.organiser;
+        var findByLastNameAndFirstNameAndDate = visitor.lastName.containsIgnoreCase(lastName).and(visitor.firstName.containsIgnoreCase(firstName));
+        var visitors = (List<Visitor>) visitorRepository.findAll(findByLastNameAndFirstNameAndDate);
+
+        //todo (or create custom comparator)
+//        Collections.sort(visitors, Comparator.comparing().thenComparing());
         return visitors
                 .stream()
                 .map(visitorMapper::mapToDto)
                 .collect(Collectors.toList());
+
+//        var visitors = (List<Visitor>) visitorRepository.findAll(QVisitor.visitor.lastName.eq(lastName));
+//
+//        return visitors
+//                .stream()
+//                .map(visitorMapper::mapToDto)
+//                .collect(Collectors.toList());
     }
 
 }

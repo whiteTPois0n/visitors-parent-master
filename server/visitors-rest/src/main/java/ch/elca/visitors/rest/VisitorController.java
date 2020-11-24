@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,8 +61,8 @@ public class VisitorController {
 
 
     @GetMapping("/search-by-lastname/{lastName}")
-    public List<VisitorDto> searchVisitorByLastName(@PathVariable String lastName) {
-        return visitorService.findVisitorByLastName(lastName);
+    public List<VisitorDto> searchVisitorByLastName(@RequestParam String lastName, @RequestParam String firstName) {
+        return visitorService.findVisitorByLastName(lastName, firstName);
     }
 
 
