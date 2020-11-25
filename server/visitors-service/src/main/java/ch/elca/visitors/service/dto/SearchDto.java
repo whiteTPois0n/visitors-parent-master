@@ -15,6 +15,7 @@ public class SearchDto {
 
     private String firstName;
     private String lastName;
+    private Boolean status;
     private LocalDateTime dateTime;
 
 }

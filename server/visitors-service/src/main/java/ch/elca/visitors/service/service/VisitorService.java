@@ -1,5 +1,6 @@
 package ch.elca.visitors.service.service;
 
+import ch.elca.visitors.service.dto.SearchDto;
 import ch.elca.visitors.service.dto.VisitorDto;
 
 import java.time.LocalDateTime;
@@ -17,8 +18,6 @@ public interface VisitorService {
 
     void deleteVisitor(Long id);
 
-    List<VisitorDto> findVisitorByLastName(String lastName, String firstNAme);
-
-//    Page<Visitor> getVisitorBy( String firstName,String lastName, Pageable pageable);
+    List<SearchDto> findVisitorByLastNameAndFirstName(String lastName, String firstNAme);
 
 }

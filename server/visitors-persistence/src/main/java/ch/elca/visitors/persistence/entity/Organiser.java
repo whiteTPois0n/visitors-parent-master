@@ -1,5 +1,6 @@
 package ch.elca.visitors.persistence.entity;
 
+import jdk.jshell.Snippet;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -55,5 +56,8 @@ public class Organiser {
 
     @Column(name = "date_time")
     private LocalDateTime dateTime;
+
+    @Column(name = "status", columnDefinition = "boolean default null")
+    private Boolean status;
 
 }

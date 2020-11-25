@@ -1,5 +1,6 @@
 package ch.elca.visitors.rest;
 
+import ch.elca.visitors.service.dto.SearchDto;
 import ch.elca.visitors.service.dto.VisitorDto;
 import ch.elca.visitors.service.service.VisitorService;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 
 @Validated
@@ -61,18 +60,8 @@ public class VisitorController {
 
 
     @GetMapping("/search-by-lastname/{lastName}")
-    public List<VisitorDto> searchVisitorByLastName(@RequestParam String lastName, @RequestParam String firstName) {
-        return visitorService.findVisitorByLastName(lastName, firstName);
+    public List<SearchDto> searchVisitorByLastName(@RequestParam(required = false) String lastName, @RequestParam(required = false) String firstName) {
+        return visitorService.findVisitorByLastNameAndFirstName(lastName, firstName);
     }
-
-
-
-//    @GetMapping("/tickets/category")
-//    public List<TicketDto> getTicketsByCategory(@RequestParam String category, @RequestParam int page, @RequestParam int size,
-//                                                @RequestParam Sort.Direction sort, @RequestParam String property) {
-//        Page<Ticket> ticketPage = ticketService.getTicketsBy(category, PageRequest.of(page, size, sort, property));
-//        Page<TicketDto> ticketDtoPage = ticketPage.map(ticketMapper::ticketToDto);
-//        return ticketDtoPage.getContent();
-//    }
 
 }

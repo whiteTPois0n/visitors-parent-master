@@ -35,4 +35,5 @@ public class OrganiserDto {
 
     private LocalDateTime dateTime;
 
+    private Boolean status;
 }
