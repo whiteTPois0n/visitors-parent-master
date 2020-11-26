@@ -51,6 +51,4 @@ public class VisitorDto {
 
     private Boolean status;
 
-    public VisitorDto(String firstName, String lastName, Boolean status) {
-    }
 }

@@ -1,8 +1,8 @@
 package ch.elca.visitors.rest;
 
-import ch.elca.visitors.persistence.entity.VisitorType;
-import ch.elca.visitors.service.dto.VisitorDto;
+import ch.elca.visitors.service.dto.FactoryDto;
 import ch.elca.visitors.service.dto.VisitorTypeDto;
+import ch.elca.visitors.service.service.FactoryService;
 import ch.elca.visitors.service.service.VisitorTypeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,34 +19,33 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Transactional
-@RequestMapping("/api/visitor-type")
+@RequestMapping("/api/factory")
 //@CrossOrigin()
-public class VisitorTypeController {
+public class FactoryController {
 
-    private final VisitorTypeService visitorTypeService;
+    private final FactoryService factoryService;
 
 
     @PostMapping("/create")
-    public void addVisitorType(@RequestBody VisitorTypeDto visitorTypeDto) {
-        visitorTypeService.addVisitorType(visitorTypeDto);
+    public void addFactory(@RequestBody FactoryDto factoryDto) {
+        factoryService.addFactory(factoryDto);
     }
 
 
     @GetMapping("/search/all")
-    public List<VisitorTypeDto> getAllVisitorTypes() {
-        return visitorTypeService.getAllVisitorTypes();
+    public List<FactoryDto> getAllFactories() {
+        return factoryService.getAllFactories();
     }
 
 
     @GetMapping("/{id}")
-    public VisitorTypeDto findVisitorType(@PathVariable("id") Long id) {
-        return visitorTypeService.findVisitorType(id);
+    public FactoryDto findFactory(@PathVariable("id") Long id) {
+        return factoryService.findFactory(id);
     }
 
 
     @PutMapping("/update")
-    public void updateVisitorType(@RequestBody VisitorTypeDto visitorTypeDto) {
-        visitorTypeService.updateVisitorType(visitorTypeDto);
+    public void updateFactory(@RequestBody FactoryDto factoryDto) {
+        factoryService.updateFactory(factoryDto);
     }
-
 }
