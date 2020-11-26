@@ -1,15 +1,11 @@
 package ch.elca.visitors.service.dto;
 
-import ch.elca.visitors.persistence.entity.VisitorType;
 import ch.elca.visitors.persistence.enumeration.Title;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import java.time.LocalDateTime;
 
 @Setter
@@ -26,7 +22,7 @@ public class VisitorDto {
 
     private String lastName;
 
-//        @Email
+    //        @Email
     private String email;
 
     private Integer phoneNumber;
@@ -35,7 +31,7 @@ public class VisitorDto {
 
     private String organization;
 
-//    @Min(value = 20, message = "Badge number should not be less than 20")
+    //    @Min(value = 20, message = "Badge number should not be less than 20")
 //    @Max(value = 20, message = "Badge number should not be greater than 18")
     private String badgeNumber;
 
