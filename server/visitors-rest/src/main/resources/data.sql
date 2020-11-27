@@ -1,3 +1,9 @@
+insert into role (id, role_name) values (1, 'ROLE_HRSTAFF');
+insert into role (id, role_name) values (2, 'ROLE_ADMIN');
+
+insert into user (id, username, password, enabled, role_id) values (1, 'hrstaff', '$2y$10$uNrUjUJHWiYYljbZN40.lOys3aaZ9EiVub0ImOJQg8xs92xyWtBA2', 1, 1);
+insert into user (id, username, password, enabled, role_id) values (2, 'admin', '$2y$12$xRwgnXLVoY6Kdw08AZPP.u2W1Ly1vsTZXnp6IhFM3dNsaUD82IOr2', 1, 2);
+
 insert into visitor_type values(1, 'Customer');
 insert into visitor_type values(2, 'Partner');
 insert into visitor_type values(3, 'Candidate');

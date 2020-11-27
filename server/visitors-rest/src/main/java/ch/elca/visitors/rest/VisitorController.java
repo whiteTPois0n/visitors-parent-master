@@ -33,7 +33,7 @@ public class VisitorController {
     }
 
 
-    @GetMapping("search/all")
+    @GetMapping("/search/all")
     public List<VisitorDto> getAllVisitors() {
         return visitorService.getAllVisitors();
     }
