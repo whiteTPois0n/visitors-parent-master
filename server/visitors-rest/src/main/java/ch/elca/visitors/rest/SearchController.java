@@ -3,6 +3,7 @@ package ch.elca.visitors.rest;
 import ch.elca.visitors.service.dto.SearchDto;
 import ch.elca.visitors.service.service.SearchService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +32,7 @@ public class SearchController {
 
 
     @GetMapping("/active-visitors")
-    public List<SearchDto> searchByActiveVisitors(@RequestParam(required = false)
+    public Page<SearchDto> searchByActiveVisitors(@RequestParam(required = false)
                                                   @DateTimeFormat(pattern = DATE_PATTERN) LocalDate dateFrom,
                                                   @RequestParam(required = false)
                                                   @DateTimeFormat(pattern = DATE_PATTERN) LocalDate dateTo) {

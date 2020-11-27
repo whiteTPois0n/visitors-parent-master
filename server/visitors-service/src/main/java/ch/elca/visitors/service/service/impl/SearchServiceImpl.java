@@ -67,7 +67,11 @@ public class SearchServiceImpl implements SearchService {
             organisersByLastNameAndFirstName = organisersByLastNameAndFirstName.and(organiser.firstName.containsIgnoreCase(firstName));
         }
 
-        // SubQueryExpression<Tuple> subQueryExpression =
+//        Using both firstName and lastName field
+        if (Objects.nonNull(lastName) && Objects.nonNull(firstName)) {
+            visitorsByLastNameAndFirstName = visitor.lastName.containsIgnoreCase(lastName).and(visitor.firstName.containsIgnoreCase(firstName));
+            organisersByLastNameAndFirstName = organiser.lastName.containsIgnoreCase(lastName).and(organiser.firstName.containsIgnoreCase(firstName));
+        }
 
 
         var visitors = (List<Visitor>) visitorRepository.findAll(visitorsByLastNameAndFirstName);
@@ -123,16 +127,18 @@ public class SearchServiceImpl implements SearchService {
 
 //        Using only dateFrom field
         if (Objects.nonNull(dateFrom)) {
+            var dateTimeNow = LocalDateTime.now();
             var dateTimeFrom = dateFrom.atTime(0, 0);
 
-            visitorsByDateFromAndDateTo = visitorsByDateFromAndDateTo.and(visitor.checkedIn.after(LocalDateTime.from(dateTimeFrom)).and(visitor.status.eq(true)));
+            visitorsByDateFromAndDateTo = visitorsByDateFromAndDateTo.and(visitor.checkedIn.between(LocalDateTime.from(dateTimeFrom),LocalDateTime.from(dateTimeNow)).and(visitor.status.eq(true)));
         }
 
 //        Using only dateTo field
         if (Objects.nonNull(dateTo)) {
+            var dateTimeNow = LocalDateTime.now();
             var dateTimeTo = dateTo.atTime(23, 59);
 
-            visitorsByDateFromAndDateTo = visitorsByDateFromAndDateTo.and(visitor.checkedIn.before(LocalDateTime.from(dateTimeTo)).and(visitor.status.eq(true)));
+            visitorsByDateFromAndDateTo = visitorsByDateFromAndDateTo.and(visitor.checkedIn.between(LocalDateTime.from(dateTimeNow), LocalDateTime.from(dateTimeTo)).and(visitor.status.eq(true)));
         }
 
 //        Using both dateFrom and dateTo field
@@ -146,7 +152,7 @@ public class SearchServiceImpl implements SearchService {
         }
 
 
-        var pageRequest = PageRequest.of(1,10,Sort.by(Sort.Direction.ASC, visitor.checkedIn.getMetadata().getName()));
+        var pageRequest = PageRequest.of(0,10,Sort.by(Sort.Direction.ASC, visitor.checkedIn.getMetadata().getName()));
 
         var visitors = visitorRepository.findAll(visitorsByDateFromAndDateTo, pageRequest);
 
