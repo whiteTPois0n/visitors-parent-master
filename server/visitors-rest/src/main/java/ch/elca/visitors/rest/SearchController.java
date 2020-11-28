@@ -12,6 +12,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,13 +37,13 @@ public class SearchController {
     }
 
 
-    @GetMapping("/active-visitors")
+    @GetMapping("/active-visitors/page/{pageNumber}/{pageSize}")
     public Page<SearchDto> searchByActiveVisitors(@RequestParam(required = false)
                                                   @DateTimeFormat(pattern = DATE_PATTERN) LocalDate dateFrom,
                                                   @RequestParam(required = false)
                                                   @DateTimeFormat(pattern = DATE_PATTERN) LocalDate dateTo,
-                                                  @RequestParam Integer pageNumber,
-                                                  @RequestParam Integer pageSize) {
+                                                  @PathVariable Integer pageNumber,
+                                                  @PathVariable Integer pageSize) {
 
         var visitor = QVisitor.visitor;
         return searchService.generateListOfActiveVisitors(PageRequest.of(pageNumber, pageSize, Sort.by(
@@ -50,11 +51,11 @@ public class SearchController {
     }
 
 
-    @GetMapping("/future-visitors")
+    @GetMapping("/future-visitors/page/{pageNumber}/{pageSize}")
     public Page<SearchDto> searchByFutureVisitors(@RequestParam(required = false)
                                                   @DateTimeFormat(pattern = DATE_PATTERN) LocalDate dateTo,
-                                                  @RequestParam Integer pageNumber,
-                                                  @RequestParam Integer pageSize) {
+                                                  @PathVariable Integer pageNumber,
+                                                  @PathVariable Integer pageSize) {
 
         var organiser = QOrganiser.organiser;
         return searchService.generateListOfFutureVisitors(PageRequest.of(pageNumber, pageSize, Sort.by(
@@ -62,11 +63,11 @@ public class SearchController {
     }
 
 
-    @GetMapping("/past-visitors")
+    @GetMapping("/past-visitors/page/{pageNumber}/{pageSize}")
     public Page<SearchDto> searchByPastVisitors(@RequestParam(required = false)
                                                 @DateTimeFormat(pattern = DATE_PATTERN) LocalDate dateFrom,
-                                                @RequestParam Integer pageNumber,
-                                                @RequestParam Integer pageSize) {
+                                                @PathVariable Integer pageNumber,
+                                                @PathVariable Integer pageSize) {
 
         var visitor = QVisitor.visitor;
         return searchService.generateListOfPastVisitors(PageRequest.of(pageNumber, pageSize, Sort.by(
