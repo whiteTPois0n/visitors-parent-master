@@ -15,13 +15,12 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class VisitorTypeServiceImpl implements VisitorTypeService {
 
-
     private final VisitorTypeRepository visitorTypeRepository;
     private final VisitorTypeMapper visitorTypeMapper;
 
 
     public void addVisitorType(VisitorTypeDto visitorTypeDto) {
-        var visitorType = visitorTypeMapper.toVisitorType(visitorTypeDto);
+        var visitorType = visitorTypeMapper.mapToVisitorType(visitorTypeDto);
         visitorTypeRepository.save(visitorType);
     }
 
@@ -30,14 +29,16 @@ public class VisitorTypeServiceImpl implements VisitorTypeService {
         var visitorTypes = visitorTypeRepository.findAll();
         return visitorTypes
                 .stream()
-                .map(visitorTypeMapper::toDto)
+                .map(visitorTypeMapper::mapToVisitorTypeDto)
                 .collect(Collectors.toList());
     }
 
+
     public VisitorTypeDto findVisitorType(Long id) {
         var visitorType = visitorTypeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Oops something went wrong, factory with id " + id + " not found"));
-        return visitorTypeMapper.toDto(visitorType);
+        return visitorTypeMapper.mapToVisitorTypeDto(visitorType);
     }
+
 
     public void updateVisitorType(VisitorTypeDto visitorTypeDto) {
         visitorTypeRepository.findById(visitorTypeDto.getId())

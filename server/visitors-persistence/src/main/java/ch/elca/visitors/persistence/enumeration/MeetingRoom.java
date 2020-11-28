@@ -1,4 +1,4 @@
 package ch.elca.visitors.persistence.enumeration;
 
-public enum MeetingRoom {
-}
+//public enum MeetingRoom {
+//}

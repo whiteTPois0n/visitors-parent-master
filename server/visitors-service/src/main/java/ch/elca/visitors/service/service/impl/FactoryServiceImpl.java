@@ -18,26 +18,30 @@ public class FactoryServiceImpl implements FactoryService {
     private final FactoryRepository factoryRepository;
     private final FactoryMapper factoryMapper;
 
+
     @Override
     public void addFactory(FactoryDto factoryDto) {
-        var factory = factoryMapper.mapToEntity(factoryDto);
+        var factory = factoryMapper.mapToFactory(factoryDto);
         factoryRepository.save(factory);
     }
+
 
     @Override
     public List<FactoryDto> getAllFactories() {
         var factories = factoryRepository.findAll();
         return factories
                 .stream()
-                .map(factoryMapper::mapToDto)
+                .map(factoryMapper::mapToFactoryDto)
                 .collect(Collectors.toList());
     }
+
 
     @Override
     public FactoryDto findFactory(Long id) {
         var factory = factoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Oops something went wrong, factory with id " + id + " not found"));
-        return factoryMapper.mapToDto(factory);
+        return factoryMapper.mapToFactoryDto(factory);
     }
+
 
     @Override
     public void updateFactory(FactoryDto factoryDto) {
@@ -47,4 +51,5 @@ public class FactoryServiceImpl implements FactoryService {
                     return factoryRepository.save(factory);
                 }).orElseThrow(() -> new ResourceNotFoundException("Oops something went wrong, factory with id " + factoryDto.getId() + " not found"));
     }
+
 }

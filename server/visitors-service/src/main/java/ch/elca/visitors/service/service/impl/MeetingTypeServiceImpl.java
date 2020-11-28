@@ -20,7 +20,7 @@ public class MeetingTypeServiceImpl implements MeetingTypeService {
 
 
     public void addMeetingType(MeetingTypeDto meetingTypeDto) {
-        var meetingType = meetingTypeMapper.mapToEntity(meetingTypeDto);
+        var meetingType = meetingTypeMapper.mapToMeetingType(meetingTypeDto);
         meetingTypeRepository.save(meetingType);
     }
 
@@ -29,14 +29,14 @@ public class MeetingTypeServiceImpl implements MeetingTypeService {
         var meetingTypes = meetingTypeRepository.findAll();
         return meetingTypes
                 .stream()
-                .map(meetingTypeMapper::mapToDto)
+                .map(meetingTypeMapper::mapToMeetingTypeDto)
                 .collect(Collectors.toList());
     }
 
 
     public MeetingTypeDto findMeetingType(Long id) {
         var meetingType = meetingTypeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Oops something went wrong, meeting type with id " + id + " not found"));
-        return meetingTypeMapper.mapToDto(meetingType);
+        return meetingTypeMapper.mapToMeetingTypeDto(meetingType);
     }
 
 

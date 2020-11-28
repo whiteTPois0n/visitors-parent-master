@@ -15,9 +15,11 @@ public class MyUserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
 
+
     public MyUserDetailsServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -26,4 +28,5 @@ public class MyUserDetailsServiceImpl implements UserDetailsService {
         user.orElseThrow(() -> new UsernameNotFoundException("Not found " + username));
         return user.map(MyUserDetails::new).get();
     }
+
 }

@@ -7,7 +7,8 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface MeetingTypeMapper {
 
-    MeetingTypeDto mapToDto(MeetingType meetingType);
+    MeetingTypeDto mapToMeetingTypeDto(MeetingType meetingType);
 
-    MeetingType mapToEntity(MeetingTypeDto meetingTypeDto);
+    MeetingType mapToMeetingType(MeetingTypeDto meetingTypeDto);
+
 }

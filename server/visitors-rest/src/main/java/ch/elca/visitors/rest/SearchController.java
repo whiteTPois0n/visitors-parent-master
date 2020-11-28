@@ -1,11 +1,16 @@
 package ch.elca.visitors.rest;
 
+import ch.elca.visitors.persistence.entity.QOrganiser;
+import ch.elca.visitors.persistence.entity.QVisitor;
 import ch.elca.visitors.service.dto.SearchDto;
 import ch.elca.visitors.service.service.SearchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,7 +23,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/search")
-//@CrossOrigin()
+@CrossOrigin()
 public class SearchController {
 
     private static final String DATE_PATTERN = "dd/MM/yyyy";
@@ -35,24 +40,37 @@ public class SearchController {
     public Page<SearchDto> searchByActiveVisitors(@RequestParam(required = false)
                                                   @DateTimeFormat(pattern = DATE_PATTERN) LocalDate dateFrom,
                                                   @RequestParam(required = false)
-                                                  @DateTimeFormat(pattern = DATE_PATTERN) LocalDate dateTo) {
+                                                  @DateTimeFormat(pattern = DATE_PATTERN) LocalDate dateTo,
+                                                  @RequestParam Integer pageNumber,
+                                                  @RequestParam Integer pageSize) {
 
-        return searchService.generateListOfCurrentVisitors(dateFrom, dateTo);
+        var visitor = QVisitor.visitor;
+        return searchService.generateListOfActiveVisitors(PageRequest.of(pageNumber, pageSize, Sort.by(
+                Sort.Direction.ASC, visitor.checkedIn.getMetadata().getName())), dateFrom, dateTo);
     }
 
 
     @GetMapping("/future-visitors")
-    public List<SearchDto> searchByFutureVisitors(@RequestParam(required = false)
-                                                  @DateTimeFormat(pattern = DATE_PATTERN) LocalDate dateTo) {
-        return searchService.generateListOfFutureVisitors(dateTo);
+    public Page<SearchDto> searchByFutureVisitors(@RequestParam(required = false)
+                                                  @DateTimeFormat(pattern = DATE_PATTERN) LocalDate dateTo,
+                                                  @RequestParam Integer pageNumber,
+                                                  @RequestParam Integer pageSize) {
+
+        var organiser = QOrganiser.organiser;
+        return searchService.generateListOfFutureVisitors(PageRequest.of(pageNumber, pageSize, Sort.by(
+                Sort.Direction.ASC, organiser.dateTime.getMetadata().getName())), dateTo);
     }
 
 
     @GetMapping("/past-visitors")
-    public List<SearchDto> searchByPastVisitors(@RequestParam(required = false)
-                                                @DateTimeFormat(pattern = DATE_PATTERN) LocalDate dateFrom) {
+    public Page<SearchDto> searchByPastVisitors(@RequestParam(required = false)
+                                                @DateTimeFormat(pattern = DATE_PATTERN) LocalDate dateFrom,
+                                                @RequestParam Integer pageNumber,
+                                                @RequestParam Integer pageSize) {
 
-        return searchService.generateListOfPastVisitors(dateFrom);
+        var visitor = QVisitor.visitor;
+        return searchService.generateListOfPastVisitors(PageRequest.of(pageNumber, pageSize, Sort.by(
+                Sort.Direction.ASC, visitor.checkedIn.getMetadata().getName())), dateFrom);
     }
 
 }

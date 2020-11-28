@@ -1,9 +1,6 @@
 package ch.elca.visitors.rest;
 
-import ch.elca.visitors.persistence.entity.MeetingType;
-import ch.elca.visitors.service.dto.FactoryDto;
 import ch.elca.visitors.service.dto.MeetingTypeDto;
-import ch.elca.visitors.service.service.FactoryService;
 import ch.elca.visitors.service.service.MeetingTypeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

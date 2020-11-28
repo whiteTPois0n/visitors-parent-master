@@ -1,11 +1,9 @@
 package ch.elca.visitors.service.service.impl;
 
-import ch.elca.visitors.persistence.repository.OrganiserRepository;
 import ch.elca.visitors.persistence.repository.VisitorRepository;
 import ch.elca.visitors.persistence.repository.VisitorTypeRepository;
 import ch.elca.visitors.service.dto.VisitorDto;
 import ch.elca.visitors.service.exception.ResourceNotFoundException;
-import ch.elca.visitors.service.mapper.OrganiserMapper;
 import ch.elca.visitors.service.mapper.VisitorMapper;
 import ch.elca.visitors.service.service.VisitorService;
 import lombok.RequiredArgsConstructor;
@@ -21,19 +19,17 @@ public class VisitorServiceImpl implements VisitorService {
 
     private final VisitorRepository visitorRepository;
     private final VisitorTypeRepository visitorTypeRepository;
-    private final OrganiserRepository organiserRepository;
 
     private final VisitorMapper visitorMapper;
-    private final OrganiserMapper organiserMapper;
 
 
     public VisitorDto addVisitor(VisitorDto visitorDto) {
-        var visitor = visitorMapper.mapToEntity(visitorDto);
+        var visitor = visitorMapper.mapToVisitor(visitorDto);
         visitorTypeRepository.findById(visitorDto.getVisitorType().getId()).orElseThrow(() -> new ResourceNotFoundException("Incorrect visitor type id"));
 
         visitor.setStatus(true);
         var saved = visitorRepository.save(visitor);
-        return visitorMapper.mapToDto(saved);
+        return visitorMapper.mapToVisitorDto(saved);
     }
 
 
@@ -41,14 +37,14 @@ public class VisitorServiceImpl implements VisitorService {
         var visitors = visitorRepository.findAll();
         return visitors
                 .stream()
-                .map(visitorMapper::mapToDto)
+                .map(visitorMapper::mapToVisitorDto)
                 .collect(Collectors.toList());
     }
 
 
     public VisitorDto findVisitor(Long id) {
         var visitor = visitorRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Oops something went wrong, visitor with id " + id + " not found"));
-        return visitorMapper.mapToDto(visitor);
+        return visitorMapper.mapToVisitorDto(visitor);
     }
 
 
@@ -71,7 +67,7 @@ public class VisitorServiceImpl implements VisitorService {
                     visitor.setTemperature(visitorDto.getTemperature());
                     visitor.setBadgeNumber(visitorDto.getBadgeNumber());
 
-                    return visitorMapper.mapToDto(visitorRepository.save(visitor));
+                    return visitorMapper.mapToVisitorDto(visitorRepository.save(visitor));
 
                 }).orElseThrow(() -> new ResourceNotFoundException("Oops something went wrong, visitor with id " + visitorDto.getId() + " not found"));
     }

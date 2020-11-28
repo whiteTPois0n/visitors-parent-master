@@ -11,9 +11,9 @@ import java.util.stream.Collectors;
 
 public class MyUserDetails implements UserDetails {
 
-    private String username;
+    private final String username;
     private final String password;
-    private boolean active;
+    private final boolean active;
     private final List<GrantedAuthority> authorities;
 
     public MyUserDetails(User user) {
@@ -59,5 +59,6 @@ public class MyUserDetails implements UserDetails {
     public boolean isEnabled() {
         return active;
     }
+
 }
 

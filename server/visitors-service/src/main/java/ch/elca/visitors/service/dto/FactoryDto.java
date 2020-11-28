@@ -13,4 +13,5 @@ public class FactoryDto {
 
     private Long id;
     private String department;
+
 }

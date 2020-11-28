@@ -1,9 +1,7 @@
 package ch.elca.visitors.rest;
 
 import ch.elca.visitors.service.dto.FactoryDto;
-import ch.elca.visitors.service.dto.VisitorTypeDto;
 import ch.elca.visitors.service.service.FactoryService;
-import ch.elca.visitors.service.service.VisitorTypeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

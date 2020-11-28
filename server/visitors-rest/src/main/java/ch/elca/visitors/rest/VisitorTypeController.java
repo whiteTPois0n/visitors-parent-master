@@ -1,7 +1,5 @@
 package ch.elca.visitors.rest;
 
-import ch.elca.visitors.persistence.entity.VisitorType;
-import ch.elca.visitors.service.dto.VisitorDto;
 import ch.elca.visitors.service.dto.VisitorTypeDto;
 import ch.elca.visitors.service.service.VisitorTypeService;
 import lombok.RequiredArgsConstructor;

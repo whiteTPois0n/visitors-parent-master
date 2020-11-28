@@ -1,7 +1,6 @@
 package ch.elca.visitors.service.service;
 
 import ch.elca.visitors.service.dto.FactoryDto;
-import ch.elca.visitors.service.dto.VisitorTypeDto;
 
 import java.util.List;
 
@@ -14,4 +13,5 @@ public interface FactoryService {
     FactoryDto findFactory(Long id);
 
     void updateFactory(FactoryDto factoryDto);
+
 }

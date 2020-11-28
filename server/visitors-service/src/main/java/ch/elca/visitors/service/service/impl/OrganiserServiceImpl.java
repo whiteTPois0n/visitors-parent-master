@@ -25,12 +25,12 @@ public class OrganiserServiceImpl implements OrganiserService {
 
 
     public OrganiserDto addOrganiser(OrganiserDto organiserDto) {
-        var organiser = organiserMapper.mapToEntity(organiserDto);
+        var organiser = organiserMapper.mapToOrganiser(organiserDto);
         factoryRepository.findById(organiserDto.getFactory().getId()).orElseThrow(() -> new ResourceNotFoundException("Incorrect factory id"));
         meetingTypeRepository.findById(organiserDto.getMeetingType().getId()).orElseThrow(() -> new ResourceNotFoundException("Incorrect meeting type id"));
 
         var savedOrganiser = organiserRepository.save(organiser);
-        return organiserMapper.mapToDto(savedOrganiser);
+        return organiserMapper.mapToOrganiserDto(savedOrganiser);
     }
 
 
@@ -38,14 +38,14 @@ public class OrganiserServiceImpl implements OrganiserService {
         var organisers = organiserRepository.findAll();
         return organisers
                 .stream()
-                .map(organiserMapper::mapToDto)
+                .map(organiserMapper::mapToOrganiserDto)
                 .collect(Collectors.toList());
     }
 
 
     public OrganiserDto findOrganiser(Long id) {
         var organiser = organiserRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Oops something went wrong, organiser with id " + id + " not found"));
-        return organiserMapper.mapToDto(organiser);
+        return organiserMapper.mapToOrganiserDto(organiser);
     }
 
 
@@ -64,7 +64,7 @@ public class OrganiserServiceImpl implements OrganiserService {
                     organiser.setDateTime(organiserDto.getDateTime());
                     organiser.setMeetingRoom(organiserDto.getMeetingRoom());
                     organiser.setMeetingType(checkMeetingType);
-                    return organiserMapper.mapToDto(organiserRepository.save(organiser));
+                    return organiserMapper.mapToOrganiserDto(organiserRepository.save(organiser));
                 }).orElseThrow(() -> new ResourceNotFoundException("Oops something went wrong, organiser with id " + organiserDto.getId() + " not found"));
     }
 
@@ -73,4 +73,5 @@ public class OrganiserServiceImpl implements OrganiserService {
         var existingOrganiser = organiserRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Oops something went wrong, visitor with id " + id + " not found"));
         organiserRepository.delete(existingOrganiser);
     }
+
 }

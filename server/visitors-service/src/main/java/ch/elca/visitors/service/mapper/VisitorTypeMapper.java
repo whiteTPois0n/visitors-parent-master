@@ -7,7 +7,8 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface VisitorTypeMapper {
 
-    VisitorTypeDto toDto(VisitorType visitorType);
+    VisitorTypeDto mapToVisitorTypeDto(VisitorType visitorType);
 
-    VisitorType toVisitorType(VisitorTypeDto visitorTypeDto);
+    VisitorType mapToVisitorType(VisitorTypeDto visitorTypeDto);
+
 }

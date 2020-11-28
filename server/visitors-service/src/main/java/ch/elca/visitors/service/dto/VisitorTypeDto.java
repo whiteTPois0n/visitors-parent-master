@@ -13,4 +13,5 @@ public class VisitorTypeDto {
 
     private Long id;
     private String type;
+
 }

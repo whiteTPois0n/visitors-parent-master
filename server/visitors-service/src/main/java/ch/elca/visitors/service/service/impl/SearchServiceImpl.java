@@ -15,7 +15,6 @@ import com.querydsl.core.types.dsl.Expressions;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -73,16 +72,13 @@ public class SearchServiceImpl implements SearchService {
             organisersByLastNameAndFirstName = organiser.lastName.containsIgnoreCase(lastName).and(organiser.firstName.containsIgnoreCase(firstName));
         }
 
-
         var visitors = (List<Visitor>) visitorRepository.findAll(visitorsByLastNameAndFirstName);
         var organisers = (List<Organiser>) organiserRepository.findAll(organisersByLastNameAndFirstName);
-
 
 //        Map visitor list to visitor Dto list then further map to SearchDto list: fields[fullName, status, checkedIn, BadgeNumber]
         List<SearchDto> visitorsResult = visitors.stream()
                 .map(visitorMapper::mapToSearchDto)
                 .collect(Collectors.toList());
-
 
 //        Map organiser list to organiser Dto list then further map to SearchDto list: fields[fullName, status, checkedIn, BadgeNumber]
         List<SearchDto> organisersResult = organisers.stream()
@@ -111,7 +107,6 @@ public class SearchServiceImpl implements SearchService {
         return Stream.of(futureResults, pastResults)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
-
     }
 
 
@@ -120,7 +115,7 @@ public class SearchServiceImpl implements SearchService {
            1. dateTime[asc]
 
     */
-    public Page<SearchDto> generateListOfCurrentVisitors(LocalDate dateFrom, LocalDate dateTo) {
+    public Page<SearchDto> generateListOfActiveVisitors(PageRequest pageRequest, LocalDate dateFrom, LocalDate dateTo) {
         var visitor = QVisitor.visitor;
 
         BooleanExpression visitorsByDateFromAndDateTo = Expressions.asBoolean(true).isTrue();
@@ -130,7 +125,7 @@ public class SearchServiceImpl implements SearchService {
             var dateTimeNow = LocalDateTime.now();
             var dateTimeFrom = dateFrom.atTime(0, 0);
 
-            visitorsByDateFromAndDateTo = visitorsByDateFromAndDateTo.and(visitor.checkedIn.between(LocalDateTime.from(dateTimeFrom),LocalDateTime.from(dateTimeNow)).and(visitor.status.eq(true)));
+            visitorsByDateFromAndDateTo = visitorsByDateFromAndDateTo.and(visitor.checkedIn.between(LocalDateTime.from(dateTimeFrom), LocalDateTime.from(dateTimeNow)).and(visitor.status.eq(true)));
         }
 
 //        Using only dateTo field
@@ -151,16 +146,12 @@ public class SearchServiceImpl implements SearchService {
                     .and(visitor.status.eq(true));
         }
 
-
-        var pageRequest = PageRequest.of(0,10,Sort.by(Sort.Direction.ASC, visitor.checkedIn.getMetadata().getName()));
-
         var visitors = visitorRepository.findAll(visitorsByDateFromAndDateTo, pageRequest);
 
 
-//         Map visitor list to visitor Dto list then further map to SearchDto list: fields[fullName, status, checkedIn, BadgeNumber]
+//         Map Page<Visitor> to Page<SearchDto> and return
         return visitors
                 .map(visitorMapper::mapToSearchDto);
-
     }
 
 
@@ -169,26 +160,23 @@ public class SearchServiceImpl implements SearchService {
            1. dateTime[asc]
 
     */
-    public List<SearchDto> generateListOfFutureVisitors(LocalDate dateTo) {
+    public Page<SearchDto> generateListOfFutureVisitors(PageRequest pageRequest, LocalDate dateTo) {
         var organiser = QOrganiser.organiser;
 
         BooleanExpression organisersByDateFromAndDateTo = Expressions.asBoolean(true).isTrue();
 
-//        Using only dateTo field
         if (Objects.nonNull(dateTo)) {
             var dateTimeNow = LocalDateTime.now();
             var dateTimeTo = dateTo.atTime(23, 59);
             organisersByDateFromAndDateTo = organisersByDateFromAndDateTo.and(organiser.dateTime.between(LocalDateTime.from(dateTimeNow), LocalDateTime.from(dateTimeTo)));
         }
 
-        var organisers = (List<Organiser>) organiserRepository.findAll(organisersByDateFromAndDateTo);
+        var organisers = organiserRepository
+                .findAll(organisersByDateFromAndDateTo, pageRequest);
 
-//        Map organiser list to organiser Dto list then further map to SearchDto list: fields[fullName, status, checkedIn, BadgeNumber]
-        return organisers.stream()
-                .map(organiserMapper::mapToSearchDto)
-                .sorted(Comparator.comparing(SearchDto::getDateTime))
-                .collect(Collectors.toList());
-
+//         Map Page<Organiser> to Page<SearchDto> and return
+        return organisers
+                .map(organiserMapper::mapToSearchDto);
     }
 
 
@@ -197,12 +185,11 @@ public class SearchServiceImpl implements SearchService {
            1. dateTime[asc]
 
     */
-    public List<SearchDto> generateListOfPastVisitors(LocalDate dateFrom) {
+    public Page<SearchDto> generateListOfPastVisitors(PageRequest pageRequest, LocalDate dateFrom) {
         var visitor = QVisitor.visitor;
 
         BooleanExpression visitorsByDateFromAndDateTo = Expressions.asBoolean(true).isTrue();
 
-        //        Using only dateFrom field
         if (Objects.nonNull(dateFrom)) {
             var dateTimeNow = LocalDateTime.now();
             var dateTimeFrom = dateFrom.atTime(0, 0);
@@ -210,15 +197,11 @@ public class SearchServiceImpl implements SearchService {
             visitorsByDateFromAndDateTo = visitorsByDateFromAndDateTo.and(visitor.checkedIn.between(LocalDateTime.from(dateTimeFrom), LocalDateTime.from(dateTimeNow)));
         }
 
-        var visitors = (List<Visitor>) visitorRepository.findAll(visitorsByDateFromAndDateTo);
+        var visitors = visitorRepository.findAll(visitorsByDateFromAndDateTo, pageRequest);
 
-
-//         Map visitor list to visitor Dto list then further map to SearchDto list: fields[fullName, status, checkedIn, BadgeNumber]
-        return visitors.stream()
-                .map(visitorMapper::mapToSearchDto)
-                .sorted(Comparator.comparing(SearchDto::getDateTime))
-                .collect(Collectors.toList());
-
+//        Map Page<Visitor> to Page<SearchDto> and return
+        return visitors
+                .map(visitorMapper::mapToSearchDto);
     }
 
 }

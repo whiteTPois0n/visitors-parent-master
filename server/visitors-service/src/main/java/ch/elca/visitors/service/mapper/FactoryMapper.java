@@ -7,7 +7,8 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface FactoryMapper {
 
-    FactoryDto mapToDto(Factory factory);
+    FactoryDto mapToFactoryDto(Factory factory);
 
-    Factory mapToEntity(FactoryDto factoryDto);
+    Factory mapToFactory(FactoryDto factoryDto);
+
 }

@@ -13,4 +13,5 @@ public class MeetingTypeDto {
 
     private Long id;
     private String meetingType;
+
 }

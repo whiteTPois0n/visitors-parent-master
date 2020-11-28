@@ -9,10 +9,10 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface VisitorMapper {
 
-    VisitorDto mapToDto(Visitor visitor);
+    VisitorDto mapToVisitorDto(Visitor visitor);
 
     @Mapping(target = "checkedOut", ignore = true)
-    Visitor mapToEntity(VisitorDto visitorDto);
+    Visitor mapToVisitor(VisitorDto visitorDto);
 
     @Mapping(target = "dateTime", source = "checkedIn")
     SearchDto mapToSearchDto(Visitor visitor);

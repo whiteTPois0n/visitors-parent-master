@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class GlobalExceptionHandler {
 
 
-    // handle specific exceptions
+//     handle specific exceptions
     @ExceptionHandler(value = {ResourceNotFoundException.class})
     public ResponseEntity<Object> handleResourceNotFoundException(ResourceNotFoundException exception, WebRequest webRequest) {
 
@@ -30,23 +30,23 @@ public class GlobalExceptionHandler {
     }
 
 
-    // handle specific exceptions
-    @ExceptionHandler(value = {ApiRequestException.class})
-    public ResponseEntity<Object> handleApiRequestException(ApiRequestException exception, WebRequest webRequest) {
+//     handle specific exceptions
+//    @ExceptionHandler(value = {ApiRequestException.class})
+//    public ResponseEntity<Object> handleApiRequestException(ApiRequestException exception, WebRequest webRequest) {
+//
+//        HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+//
+//        ExceptionDetails exceptionDetails = new ExceptionDetails(
+//                exception.getMessage(),
+//                LocalDateTime.now(),
+//                badRequest
+//        );
+//
+//        return new ResponseEntity<>(exceptionDetails, badRequest);
+//    }
 
-        HttpStatus badRequest = HttpStatus.BAD_REQUEST;
 
-        ExceptionDetails exceptionDetails = new ExceptionDetails(
-                exception.getMessage(),
-                LocalDateTime.now(),
-                badRequest
-        );
-
-        return new ResponseEntity<>(exceptionDetails, badRequest);
-    }
-
-
-    // handle global exceptions
+//     handle global exceptions
     @ExceptionHandler(value = {Exception.class})
     public ResponseEntity<Object> handleGlobalException(Exception exception, WebRequest webRequest) {
 

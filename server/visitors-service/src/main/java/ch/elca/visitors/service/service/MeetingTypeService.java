@@ -1,6 +1,5 @@
 package ch.elca.visitors.service.service;
 
-import ch.elca.visitors.service.dto.FactoryDto;
 import ch.elca.visitors.service.dto.MeetingTypeDto;
 
 import java.util.List;
@@ -14,4 +13,5 @@ public interface MeetingTypeService {
     MeetingTypeDto findMeetingType(Long id);
 
     void updateMeetingType(MeetingTypeDto meetingTypeDto);
+
 }

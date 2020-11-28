@@ -2,6 +2,7 @@ package ch.elca.visitors.service.service;
 
 import ch.elca.visitors.service.dto.SearchDto;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -10,9 +11,10 @@ public interface SearchService {
 
     List<SearchDto> filterByLastNameAndFirstName(String lastName, String firstNAme);
 
-    Page<SearchDto> generateListOfCurrentVisitors(LocalDate dateFrom, LocalDate dateTo);
+    Page<SearchDto> generateListOfActiveVisitors(PageRequest pageRequest, LocalDate dateFrom, LocalDate dateTo);
 
-    List<SearchDto> generateListOfFutureVisitors(LocalDate dateTo);
+    Page<SearchDto> generateListOfFutureVisitors(PageRequest pageRequest, LocalDate dateTo);
 
-    List<SearchDto> generateListOfPastVisitors(LocalDate dateFrom);
+    Page<SearchDto> generateListOfPastVisitors(PageRequest pageRequest, LocalDate dateFrom);
+
 }
