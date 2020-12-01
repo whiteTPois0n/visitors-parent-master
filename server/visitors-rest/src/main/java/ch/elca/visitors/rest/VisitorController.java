@@ -20,7 +20,7 @@ import java.util.List;
 @Validated
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/visitor")
+@RequestMapping("/visitor")
 //@CrossOrigin()
 public class VisitorController {
 

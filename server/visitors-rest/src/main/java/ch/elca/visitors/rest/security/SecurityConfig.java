@@ -23,7 +23,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         this.userDetailsService = userDetailsService;
     }
 
-    @Autowired
+    @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(getPasswordEncoder());
     }
@@ -32,8 +32,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/factory/**").hasRole("ADMIN")
-                .antMatchers("/api/organiser/**").hasAnyRole("ADMIN", "HRSTAFF")
+                .antMatchers("/super-admin/**").hasRole("SUPERADMIN")
+                .antMatchers("/factory/**").hasRole("ADMIN")
+                .antMatchers("/organiser/**").hasAnyRole("ADMIN", "HRSTAFF")
                 .antMatchers("/**").permitAll()
                 .antMatchers("/").permitAll()
                 .and().formLogin();
@@ -43,4 +44,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 }

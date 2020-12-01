@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Transactional
-@RequestMapping("/api/meeting-type")
+@RequestMapping("/meeting-type")
 //@CrossOrigin()
 public class MeetingTypeController {
 

@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Transactional
-@RequestMapping("/api/factory")
+@RequestMapping("/factory")
 //@CrossOrigin()
 public class FactoryController {
 

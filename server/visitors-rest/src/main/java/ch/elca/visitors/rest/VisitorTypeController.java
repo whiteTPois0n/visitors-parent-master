@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Transactional
-@RequestMapping("/api/visitor-type")
+@RequestMapping("/visitor-type")
 //@CrossOrigin()
 public class VisitorTypeController {
 

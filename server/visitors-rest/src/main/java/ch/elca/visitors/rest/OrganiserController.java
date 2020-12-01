@@ -19,7 +19,7 @@ import java.util.List;
 @Validated
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/organiser")
+@RequestMapping("/organiser")
 //@CrossOrigin()
 public class OrganiserController {
 

@@ -23,7 +23,7 @@ import java.util.List;
 @Validated
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/search")
+@RequestMapping("/search")
 @CrossOrigin()
 public class SearchController {
 
@@ -42,8 +42,8 @@ public class SearchController {
                                                   @DateTimeFormat(pattern = DATE_PATTERN) LocalDate dateFrom,
                                                   @RequestParam(required = false)
                                                   @DateTimeFormat(pattern = DATE_PATTERN) LocalDate dateTo,
-                                                  @PathVariable Integer pageNumber,
-                                                  @PathVariable Integer pageSize) {
+                                                  @PathVariable("pageNumber") Integer pageNumber,
+                                                  @PathVariable("pageSize") Integer pageSize) {
 
         var visitor = QVisitor.visitor;
         return searchService.generateListOfActiveVisitors(PageRequest.of(pageNumber, pageSize, Sort.by(
@@ -54,8 +54,8 @@ public class SearchController {
     @GetMapping("/future-visitors/page/{pageNumber}/{pageSize}")
     public Page<SearchDto> searchByFutureVisitors(@RequestParam(required = false)
                                                   @DateTimeFormat(pattern = DATE_PATTERN) LocalDate dateTo,
-                                                  @PathVariable Integer pageNumber,
-                                                  @PathVariable Integer pageSize) {
+                                                  @PathVariable("pageNumber") Integer pageNumber,
+                                                  @PathVariable("pageSize") Integer pageSize) {
 
         var organiser = QOrganiser.organiser;
         return searchService.generateListOfFutureVisitors(PageRequest.of(pageNumber, pageSize, Sort.by(
@@ -66,8 +66,8 @@ public class SearchController {
     @GetMapping("/past-visitors/page/{pageNumber}/{pageSize}")
     public Page<SearchDto> searchByPastVisitors(@RequestParam(required = false)
                                                 @DateTimeFormat(pattern = DATE_PATTERN) LocalDate dateFrom,
-                                                @PathVariable Integer pageNumber,
-                                                @PathVariable Integer pageSize) {
+                                                @PathVariable("pageNumber") Integer pageNumber,
+                                                @PathVariable("pageSize") Integer pageSize) {
 
         var visitor = QVisitor.visitor;
         return searchService.generateListOfPastVisitors(PageRequest.of(pageNumber, pageSize, Sort.by(
