@@ -8,24 +8,39 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final UserDetailsService userDetailsService;
+//    private final UserDetailsService userDetailsService;
+//
+////    public SecurityConfig(UserDetailsService userDetailsService) {
+////        this.userDetailsService = userDetailsService;
+////    }
 
-    public SecurityConfig(UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
+    private final DataSource dataSource;
+
+    @Autowired
+    public SecurityConfig(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(getPasswordEncoder());
+        auth.jdbcAuthentication()
+                .dataSource(dataSource)
+                .passwordEncoder(getPasswordEncoder())
+                .usersByUsernameQuery("select username, password, enabled from `user` where username = ?")
+                .authoritiesByUsernameQuery("select u.username, r.role_name from `user` u inner join `role` r on u.role_id = r.id where u.username = ?")
+                .rolePrefix("ROLE_");
+
+//        auth.userDetailsService(userDetailsService).passwordEncoder(getPasswordEncoder());
     }
 
     @Override
@@ -35,8 +50,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/super-admin/**").hasRole("SUPERADMIN")
                 .antMatchers("/factory/**").hasRole("ADMIN")
                 .antMatchers("/organiser/**").hasAnyRole("ADMIN", "HRSTAFF")
-                .antMatchers("/**").permitAll()
-                .antMatchers("/").permitAll()
+                .antMatchers("/meeting-type/**").hasAnyRole("ADMIN")
+//                .antMatchers("/**").permitAll()
+//                .antMatchers("/").permitAll()
+//                                .anyRequest().denyAll()
                 .and().formLogin();
     }
 
