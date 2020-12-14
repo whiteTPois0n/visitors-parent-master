@@ -28,7 +28,7 @@ public class OrganiserServiceImpl implements OrganiserService {
         var organiser = organiserMapper.mapToOrganiser(organiserDto);
         factoryRepository.findById(organiserDto.getFactory().getId()).orElseThrow(() -> new ResourceNotFoundException("Incorrect factory id"));
         meetingTypeRepository.findById(organiserDto.getMeetingType().getId()).orElseThrow(() -> new ResourceNotFoundException("Incorrect meeting type id"));
-
+        organiser.setStatus(false);
         var savedOrganiser = organiserRepository.save(organiser);
         return organiserMapper.mapToOrganiserDto(savedOrganiser);
     }

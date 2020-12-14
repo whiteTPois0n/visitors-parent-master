@@ -3,6 +3,7 @@ package ch.elca.visitors.rest;
 import ch.elca.visitors.service.dto.FactoryDto;
 import ch.elca.visitors.service.service.FactoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional
 @RequestMapping("/factory")
-//@CrossOrigin()
+@CrossOrigin()
 public class FactoryController {
 
     private final FactoryService factoryService;

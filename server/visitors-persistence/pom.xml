@@ -77,6 +77,53 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!--    Typescript generator plugin    -->
+            <plugin>
+                <groupId>cz.habarta.typescript-generator</groupId>
+                <artifactId>typescript-generator-maven-plugin</artifactId>
+                <version>2.22.595</version>
+                <executions>
+                    <execution>
+                        <id>generate-dto-classes</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <phase>process-classes</phase>
+                        <configuration>
+                            <excludeClasses>
+                                <class>java.sql.Timestamp</class>
+                                <class>org.hibernate.engine.spi.ManagedEntity</class>
+                                <class>org.hibernate.engine.spi.PersistentAttributeInterceptable</class>
+                                <class>org.hibernate.engine.spi.ManagedComposite</class>
+                                <class>org.hibernate.engine.spi.Managed</class>
+                                <class>org.hibernate.engine.spi.ManagedMappedSuperclass</class>
+                                <class>java.time.zone.ZoneRules</class>
+                                <class>java.time.zone.ZoneOffsetTransition</class>
+                                <class>java.time.temporal.TemporalAccessor</class>
+                                <class>java.time.temporal.TemporalAdjuster</class>
+                                <class>java.lang.Comparable</class>
+                                <class>java.io.Serializable</class>
+                            </excludeClasses>
+                            <jsonLibrary>jackson2</jsonLibrary>
+                            <classPatterns>
+
+                                <pattern>ch.elca.visitors.persistence.enumeration.Title</pattern>
+
+                            </classPatterns>
+
+                            <mapEnum>asEnum</mapEnum>
+                            <mapClasses>asClasses</mapClasses>
+                            <nonConstEnums>true</nonConstEnums>
+                            <stringQuotes>singleQuotes</stringQuotes>
+                            <outputFile>target/generated-sources/typescript/Model.ts</outputFile>
+                            <outputKind>module</outputKind>
+                            <outputFileType>implementationFile</outputFileType>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
 

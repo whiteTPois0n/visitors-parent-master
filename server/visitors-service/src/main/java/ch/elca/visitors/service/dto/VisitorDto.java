@@ -22,7 +22,6 @@ public class VisitorDto {
 
     private String lastName;
 
-    //        @Email
     private String email;
 
     private Integer phoneNumber;
@@ -31,13 +30,7 @@ public class VisitorDto {
 
     private String organization;
 
-    //    @Min(value = 20, message = "Badge number should not be less than 20")
-//    @Max(value = 20, message = "Badge number should not be greater than 18")
     private String badgeNumber;
-
-//    private Boolean status;
-
-//    private LocalDateTime checkedOut;
 
     private String contactPerson;
 
@@ -48,6 +41,8 @@ public class VisitorDto {
     private String address;
 
     private LocalDateTime checkedIn;
+
+//        private LocalDateTime checkedOut;
 
     private Boolean status;
 

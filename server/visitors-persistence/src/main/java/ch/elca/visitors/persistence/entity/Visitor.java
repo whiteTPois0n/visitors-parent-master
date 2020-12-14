@@ -1,12 +1,15 @@
 package ch.elca.visitors.persistence.entity;
 
 import ch.elca.visitors.persistence.enumeration.Title;
+import ch.elca.visitors.persistence.nativesql.Query;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
+import javax.persistence.ColumnResult;
+import javax.persistence.ConstructorResult;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -15,11 +18,21 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedNativeQuery;
+import javax.persistence.SqlResultSetMapping;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.time.LocalDateTime;
 
+@NamedNativeQuery(name = "Visitor.search", query = Query.SEARCH_VISITOR_ORGANISER_SQL, resultSetMapping = "searchMapping")
+@SqlResultSetMapping(name = "searchMapping", classes = {
+        @ConstructorResult(targetClass = SearchResultItem.class, columns = {
+                @ColumnResult(name = "first_name", type = String.class),
+                @ColumnResult(name = "last_name", type = String.class),
+                @ColumnResult(name = "status", type = Boolean.class),
+                @ColumnResult(name = "checked_in_time", type = LocalDateTime.class)})
+})
 @Getter
 @Setter
 @AllArgsConstructor
@@ -60,9 +73,9 @@ public class Visitor extends AuditModel {
     @Column(name = "reason_of_visit", nullable = false, length = 150)
     private String reasonOfVisit;
 
-    @Min(value = 20, message = "Badge number should not be less than 20")
-    @Max(value = 20, message = "Badge number should not be greater than 18")
-    @Column(name = "badge_number", nullable = false, length = 20)
+    @Min(value = 10, message = "Badge number should not be less than 10")
+    @Max(value = 10, message = "Badge number should not be greater than 10")
+    @Column(name = "badge_number", nullable = false, length = 10)
     private String badgeNumber;
 
     @Column(nullable = false)
@@ -77,5 +90,18 @@ public class Visitor extends AuditModel {
     @ManyToOne
     @JoinColumn(referencedColumnName = "id", name = "visitor_type_id", nullable = false)
     private VisitorType visitorType;
+
+//    @ManyToMany(cascade = {
+//            CascadeType.PERSIST,
+//            CascadeType.MERGE
+//            })
+//    @JoinTable(name ="visitor_organiser",
+//            joinColumns =@JoinColumn(name ="visitor_id"),
+//            inverseJoinColumns =@JoinColumn(name ="organiser_id"))
+//    private List<Organiser> organisers;
+
+
+//    @OneToMany
+//    private List<Organiser> organiser;
 
 }

@@ -4,6 +4,7 @@ import ch.elca.visitors.service.dto.OrganiserDto;
 import ch.elca.visitors.service.service.OrganiserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +21,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/organiser")
-//@CrossOrigin()
+@CrossOrigin()
 public class OrganiserController {
 
     private final OrganiserService organiserService;

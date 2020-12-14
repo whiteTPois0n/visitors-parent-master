@@ -3,6 +3,7 @@ package ch.elca.visitors.rest;
 import ch.elca.visitors.service.dto.MeetingTypeDto;
 import ch.elca.visitors.service.service.MeetingTypeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional
 @RequestMapping("/meeting-type")
-//@CrossOrigin()
+@CrossOrigin()
 public class MeetingTypeController {
 
     private final MeetingTypeService meetingTypeService;

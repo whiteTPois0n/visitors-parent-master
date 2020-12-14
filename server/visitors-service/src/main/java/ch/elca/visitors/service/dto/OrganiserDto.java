@@ -2,12 +2,14 @@ package ch.elca.visitors.service.dto;
 
 import ch.elca.visitors.persistence.entity.Factory;
 import ch.elca.visitors.persistence.entity.MeetingType;
+import ch.elca.visitors.persistence.entity.Visitor;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Setter
 @Getter
@@ -36,5 +38,7 @@ public class OrganiserDto {
     private LocalDateTime dateTime;
 
     private Boolean status;
+
+//    private List<Visitor> visitors;
 
 }

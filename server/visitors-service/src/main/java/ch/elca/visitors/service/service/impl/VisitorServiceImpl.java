@@ -24,10 +24,12 @@ public class VisitorServiceImpl implements VisitorService {
 
 
     public VisitorDto addVisitor(VisitorDto visitorDto) {
-        var visitor = visitorMapper.mapToVisitor(visitorDto);
+
         visitorTypeRepository.findById(visitorDto.getVisitorType().getId()).orElseThrow(() -> new ResourceNotFoundException("Incorrect visitor type id"));
 
+        var visitor = visitorMapper.mapToVisitor(visitorDto);
         visitor.setStatus(true);
+
         var saved = visitorRepository.save(visitor);
         return visitorMapper.mapToVisitorDto(saved);
     }

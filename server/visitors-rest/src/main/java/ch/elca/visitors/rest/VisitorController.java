@@ -4,6 +4,7 @@ import ch.elca.visitors.service.dto.VisitorDto;
 import ch.elca.visitors.service.service.VisitorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +22,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/visitor")
-//@CrossOrigin()
+@CrossOrigin()
 public class VisitorController {
 
     private final VisitorService visitorService;
