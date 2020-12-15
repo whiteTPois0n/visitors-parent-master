@@ -115,9 +115,9 @@ public class SearchController {
 
     @GetMapping("/search-visitors-organisers/{pageNumber}/{pageSize}")
     public Page<SearchResultItem> searchVisitorsOrganisers(@RequestParam(required = false) String lastName,
-                                                          @RequestParam(required = false) String firstName,
-                                                          @PathVariable("pageNumber") Integer pageNumber,
-                                                          @PathVariable("pageSize") Integer pageSize) {
+                                                           @RequestParam(required = false) String firstName,
+                                                           @PathVariable("pageNumber") Integer pageNumber,
+                                                           @PathVariable("pageSize") Integer pageSize) {
         return searchService.searchVisitorsOrganisers(lastName, firstName, PageRequest.of(pageNumber, pageSize));
     }
 }

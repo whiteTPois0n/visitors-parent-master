@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -55,6 +56,12 @@ public class VisitorController {
     @DeleteMapping("/delete/{id}")
     public void deleteVisitorById(@PathVariable Long id) {
         visitorService.deleteVisitor(id);
+    }
+
+    @GetMapping("/verify-badge-number")
+    public String findVisitor(@RequestParam String badgeNumber,
+                              @RequestParam String email) {
+        return visitorService.verifyVisitorBadgeNumberAndCheckout(badgeNumber, email);
     }
 
 }

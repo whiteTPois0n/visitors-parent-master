@@ -1,14 +1,17 @@
 package ch.elca.visitors.service.service.impl;
 
+import ch.elca.visitors.persistence.entity.QVisitor;
 import ch.elca.visitors.persistence.repository.VisitorRepository;
 import ch.elca.visitors.persistence.repository.VisitorTypeRepository;
 import ch.elca.visitors.service.dto.VisitorDto;
 import ch.elca.visitors.service.exception.ResourceNotFoundException;
 import ch.elca.visitors.service.mapper.VisitorMapper;
 import ch.elca.visitors.service.service.VisitorService;
+import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -78,6 +81,21 @@ public class VisitorServiceImpl implements VisitorService {
     public void deleteVisitor(Long id) {
         var existingVisitor = visitorRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Oops something went wrong, visitor with id " + id + " not found"));
         visitorRepository.delete(existingVisitor);
+    }
+
+
+    public String verifyVisitorBadgeNumberAndCheckout(String badgeNumber, String email) {
+
+        var qVisitor = QVisitor.visitor;
+        var predicate = new BooleanBuilder();
+
+        predicate.and(qVisitor.email.eq(email).and(qVisitor.badgeNumber.eq(badgeNumber)));
+
+        var visitor = (visitorRepository.findOne(predicate).orElseThrow(() -> new ResourceNotFoundException("Oops something went wrong, visitor with badge number " + badgeNumber + " not found")));
+        LocalDateTime localDateTime = LocalDateTime.now();
+        visitor.setCheckedOut(localDateTime);
+        visitorRepository.save(visitor);
+        return "Checkout successful";
     }
 
 }
