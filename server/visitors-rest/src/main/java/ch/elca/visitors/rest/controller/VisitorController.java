@@ -1,4 +1,4 @@
-package ch.elca.visitors.rest;
+package ch.elca.visitors.rest.controller;
 
 import ch.elca.visitors.service.dto.VisitorDto;
 import ch.elca.visitors.service.service.VisitorService;
@@ -58,10 +58,11 @@ public class VisitorController {
         visitorService.deleteVisitor(id);
     }
 
-    @GetMapping("/verify-badge-number")
-    public String findVisitor(@RequestParam String badgeNumber,
-                              @RequestParam String email) {
-        return visitorService.verifyVisitorBadgeNumberAndCheckout(badgeNumber, email);
+    @GetMapping("/search-visitor")
+    public List<VisitorDto> searchVisitorByNameOrEmail(@RequestParam(required = false) String firstName,
+                                                       @RequestParam(required = false) String lastName,
+                                                       @RequestParam(required = false) String email) {
+        return visitorService.searchVisitorByNameOrEmail(firstName, lastName, email);
     }
 
 }

@@ -1,4 +1,4 @@
-package ch.elca.visitors.rest;
+package ch.elca.visitors.rest.controller;
 
 import ch.elca.visitors.service.dto.RegisterDto;
 import ch.elca.visitors.service.service.UserService;

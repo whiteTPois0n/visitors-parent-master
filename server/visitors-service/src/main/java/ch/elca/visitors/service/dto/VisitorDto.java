@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 @Setter
 @Getter
 @AllArgsConstructor
@@ -26,24 +24,8 @@ public class VisitorDto {
 
     private Integer phoneNumber;
 
-    private VisitorTypeDto visitorType;
-
-    private String organization;
-
-    private String badgeNumber;
-
-    private String contactPerson;
-
-    private String reasonOfVisit;
-
-    private Double temperature;
-
     private String address;
 
-    private LocalDateTime checkedIn;
-
-//        private LocalDateTime checkedOut;
-
-    private Boolean status;
+    private String organization;
 
 }

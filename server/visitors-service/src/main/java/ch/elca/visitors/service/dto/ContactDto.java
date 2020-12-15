@@ -9,9 +9,14 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class VisitorTypeDto {
+public class ContactDto {
 
     private Long id;
-    private String type;
+
+    private String firstName;
+
+    private String lastName;
+
+    private String visa;
 
 }

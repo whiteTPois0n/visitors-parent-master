@@ -16,6 +16,6 @@ public interface VisitorService {
 
     void deleteVisitor(Long id);
 
-    String verifyVisitorBadgeNumberAndCheckout(String badgeNumber, String email);
+    List<VisitorDto> searchVisitorByNameOrEmail(String firstName, String lastName, String email);
 
 }
