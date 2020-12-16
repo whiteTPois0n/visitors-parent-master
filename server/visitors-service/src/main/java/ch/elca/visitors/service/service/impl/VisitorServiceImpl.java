@@ -71,21 +71,22 @@ public class VisitorServiceImpl implements VisitorService {
     }
 
 
-    public List<VisitorDto> searchVisitorByNameOrEmail(String firstName, String lastName, String email) {
-
-        var visitors = IteratorUtil.toList(visitorRepository.findAll(buildVisitorPredicate(firstName, lastName, email)));
+    public List<VisitorDto> searchVisitorsByNameOrEmail(String search) {
+        var visitors = IteratorUtil.toList(visitorRepository.findAll(buildSearchVisitorByNameOrEmailPredicate(search)));
 
         return visitors.stream()
                 .map(visitorMapper::mapToVisitorDto)
                 .collect(Collectors.toList());
     }
 
-    private BooleanBuilder buildVisitorPredicate(String firstName, String lastName, String email) {
+
+    private BooleanBuilder buildSearchVisitorByNameOrEmailPredicate(String search) {
         var qVisitor = QVisitor.visitor;
         var predicate = new BooleanBuilder();
 
-        if (Objects.nonNull(firstName) && Objects.nonNull(lastName) && Objects.nonNull(email)) {
-            predicate.and(qVisitor.firstName.equalsIgnoreCase(firstName).or(qVisitor.lastName.equalsIgnoreCase(lastName)).or(qVisitor.email.eq(email)));
+        if (Objects.nonNull(search)) {
+            predicate.and(qVisitor.lastName.containsIgnoreCase(search)
+                    .or(qVisitor.firstName.containsIgnoreCase(search).or(qVisitor.email.containsIgnoreCase(search))));
         }
 
         return predicate;

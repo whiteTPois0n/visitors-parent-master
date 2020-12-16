@@ -16,6 +16,6 @@ public interface VisitorService {
 
     void deleteVisitor(Long id);
 
-    List<VisitorDto> searchVisitorByNameOrEmail(String firstName, String lastName, String email);
+    List<VisitorDto> searchVisitorsByNameOrEmail(String search);
 
 }

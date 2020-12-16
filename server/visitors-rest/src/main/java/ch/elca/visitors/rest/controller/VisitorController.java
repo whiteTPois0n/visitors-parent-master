@@ -58,11 +58,17 @@ public class VisitorController {
         visitorService.deleteVisitor(id);
     }
 
-    @GetMapping("/search-visitor")
-    public List<VisitorDto> searchVisitorByNameOrEmail(@RequestParam(required = false) String firstName,
-                                                       @RequestParam(required = false) String lastName,
-                                                       @RequestParam(required = false) String email) {
-        return visitorService.searchVisitorByNameOrEmail(firstName, lastName, email);
+
+    @GetMapping("/search-visitors")
+    public List<VisitorDto> searchVisitorsByLastNameOrFirstNameOrEmail(@RequestParam(required = false) String search) {
+        return visitorService.searchVisitorsByNameOrEmail(search);
     }
+
+
+//    @GetMapping("/search-visitors-name")
+//    public List<VisitorDto> searchVisitorsByLastNameOrFirstName(@RequestParam(required = false) String lastName,
+//                                                                @RequestParam(required = false) String firstName) {
+//        return visitorService.searchVisitorsByName(lastName, firstName);
+//    }
 
 }
