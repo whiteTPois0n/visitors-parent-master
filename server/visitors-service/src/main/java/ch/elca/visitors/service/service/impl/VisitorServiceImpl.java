@@ -28,7 +28,6 @@ public class VisitorServiceImpl implements VisitorService {
     public VisitorDto addVisitor(VisitorDto visitorDto) {
         var visitor = visitorMapper.mapToVisitor(visitorDto);
         var saved = visitorRepository.save(visitor);
-
         return visitorMapper.mapToVisitorDto(saved);
     }
 

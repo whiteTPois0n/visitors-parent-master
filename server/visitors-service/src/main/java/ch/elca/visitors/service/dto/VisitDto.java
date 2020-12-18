@@ -26,9 +26,8 @@ public class VisitDto {
 
     private LocalDateTime checkedOut;
 
-    private VisitorDto visitorDto;
+    private VisitorDto visitor;
 
-    private AppointmentDto appointmentDto;
+    private AppointmentDto appointment;
 
-    private ContactDto contactDto;
 }

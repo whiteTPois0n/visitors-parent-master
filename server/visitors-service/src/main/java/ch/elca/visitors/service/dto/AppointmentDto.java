@@ -29,7 +29,7 @@ public class AppointmentDto {
 
     private LocalDateTime appointmentDate;
 
-    private ContactDto contactDto;
+    private ContactDto contact;
 
-    private VisitorDto visitorDto;
+    private VisitorDto visitor;
 }
