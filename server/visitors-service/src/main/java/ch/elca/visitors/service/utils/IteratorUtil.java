@@ -1,4 +1,4 @@
-package ch.elca.visitors.service.Utils;
+package ch.elca.visitors.service.utils;
 
 import java.util.List;
 import java.util.stream.Collectors;

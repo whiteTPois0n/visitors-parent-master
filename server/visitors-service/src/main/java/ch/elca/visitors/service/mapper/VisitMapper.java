@@ -8,9 +8,14 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface VisitMapper {
 
+//    @Mapping(target = "contactId", source = "contact.id")
+//    @Mapping(target = "appointmentId", source = "appointment.id")
     VisitDto mapToVisitDto(Visit visit);
 
-    @Mapping(target = "checkedIn", ignore = true)
+//    @Mapping(target = "contact", ignore = true)
+//    @Mapping(target = "appointment", ignore = true)
+//    @Mapping(target = "contact.id", source = "contactId")
+//    @Mapping(target = "appointment.id", source = "appointmentId")
     Visit mapToVisit(VisitDto visitDto);
 
 }

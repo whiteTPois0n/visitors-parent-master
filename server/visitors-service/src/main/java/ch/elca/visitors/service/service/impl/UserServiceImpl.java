@@ -2,6 +2,7 @@ package ch.elca.visitors.service.service.impl;
 
 import ch.elca.visitors.persistence.entity.User;
 import ch.elca.visitors.persistence.repository.UserRepository;
+import ch.elca.visitors.service.dto.LoginDto;
 import ch.elca.visitors.service.dto.RegisterDto;
 import ch.elca.visitors.service.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,11 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
+
+//    @Override
+//    public void authenticateUser(LoginDto loginDto) {
+//
+//    }
 
     @Override
     public void RegisterUser(RegisterDto registerDto) {

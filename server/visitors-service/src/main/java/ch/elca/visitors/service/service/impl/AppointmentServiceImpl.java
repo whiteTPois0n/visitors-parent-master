@@ -4,15 +4,23 @@ import ch.elca.visitors.persistence.entity.QAppointment;
 import ch.elca.visitors.persistence.repository.AppointmentRepository;
 import ch.elca.visitors.persistence.repository.ContactRepository;
 import ch.elca.visitors.persistence.repository.VisitorRepository;
-import ch.elca.visitors.service.Utils.IteratorUtil;
 import ch.elca.visitors.service.dto.AppointmentDto;
+import ch.elca.visitors.service.excel.AppointmentExporter;
 import ch.elca.visitors.service.exception.ResourceNotFoundException;
 import ch.elca.visitors.service.mapper.AppointmentMapper;
 import ch.elca.visitors.service.service.AppointmentService;
+import ch.elca.visitors.service.utils.IteratorUtil;
 import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -48,24 +56,92 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
 
-    public List<AppointmentDto> searchAppointmentByVisitorFirstNameOrLastNameOrEmail(String search) {
-        var appointments = IteratorUtil.toList(appointmentRepository.findAll(buildAppointmentPredicate(search)));
+    public Page<AppointmentDto> getAllAppointments(PageRequest pageRequest) {
+        var appointments = appointmentRepository.findAll(pageRequest);
+        return appointments
+                .map(appointmentMapper::mapToAppointmentDto);
+    }
+
+
+    public List<AppointmentDto> searchAppointmentsByVisitorNameOrEmail(String search) {
+        var appointments = IteratorUtil.toList(appointmentRepository.findAll(buildSearchAppointmentsByVisitor(search)));
+
         return appointments.stream()
                 .map(appointmentMapper::mapToAppointmentDto)
                 .collect(Collectors.toList());
     }
 
 
-    public BooleanBuilder buildAppointmentPredicate(String search) {
+    public Page<AppointmentDto> searchFutureVisitors(PageRequest pageRequest, LocalDate dateTo) {
+        var appointments = appointmentRepository.findAll(buildSearchFutureVisitorsPredicate(dateTo), pageRequest);
+        return appointments
+                .map(appointmentMapper::mapToAppointmentDto);
+    }
+
+
+    public Page<AppointmentDto> searchAppointmentsByVisitorName(PageRequest pageRequest, String search) {
+        var appointments = appointmentRepository.findAll(buildSearchAppointmentsByVisitorNamePredicate(search), pageRequest);
+        return appointments
+                .map(appointmentMapper::mapToAppointmentDto);
+    }
+
+
+    public void exportListOfFutureVisitors(HttpServletResponse response, LocalDate dateTo) throws IOException {
+
+        var appointments = IteratorUtil.toList(appointmentRepository.findAll(buildSearchFutureVisitorsPredicate(dateTo)));
+
+        var appointmentDtos = appointments
+                .stream()
+                .map(appointmentMapper::mapToAppointmentDto)
+                .sorted(Comparator.comparing(AppointmentDto::getAppointmentDate))
+                .collect(Collectors.toList());
+
+        AppointmentExporter appointmentExporter = new AppointmentExporter(appointmentDtos);
+        appointmentExporter.export(response);
+    }
+
+
+    private BooleanBuilder buildSearchAppointmentsByVisitor(String search) {
         var qAppointment = QAppointment.appointment;
         var predicate = new BooleanBuilder();
 
         if (Objects.nonNull(search)) {
-            predicate.and(qAppointment.visitor.firstName.containsIgnoreCase(search).or(qAppointment.visitor.lastName.containsIgnoreCase(search)
-                    .or(qAppointment.visitor.email.containsIgnoreCase(search))));
+
+            predicate
+                    .and(qAppointment.visitor.lastName.containsIgnoreCase(search)
+                            .or(qAppointment.visitor.firstName.containsIgnoreCase(search)
+                                    .or(qAppointment.visitor.email.containsIgnoreCase(search))));
+        }
+        return predicate;
+    }
+
+
+    private BooleanBuilder buildSearchFutureVisitorsPredicate(LocalDate dateTo) {
+        var qAppointment = QAppointment.appointment;
+        var predicate = new BooleanBuilder();
+
+        LocalDateTime today = LocalDate.now().atStartOfDay();
+        LocalDateTime dateToWithTime = dateTo.atTime(23, 59, 59);
+
+        predicate
+                .and(qAppointment.appointmentDate.between(today, dateToWithTime));
+
+        return predicate;
+    }
+
+
+    private BooleanBuilder buildSearchAppointmentsByVisitorNamePredicate(String search) {
+        var qAppointment = QAppointment.appointment;
+        var predicate = new BooleanBuilder();
+
+        if (Objects.nonNull(search)) {
+            predicate
+                    .and(qAppointment.visitor.lastName.containsIgnoreCase(search))
+                    .or(qAppointment.visitor.firstName.containsIgnoreCase(search));
         }
 
         return predicate;
+
     }
 
 }

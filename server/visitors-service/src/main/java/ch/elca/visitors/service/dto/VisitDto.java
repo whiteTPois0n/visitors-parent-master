@@ -24,10 +24,14 @@ public class VisitDto {
 
     private Double temperature;
 
+    private LocalDateTime checkedIn;
+
     private LocalDateTime checkedOut;
 
     private VisitorDto visitor;
 
     private AppointmentDto appointment;
+
+    private ContactDto contact;
 
 }

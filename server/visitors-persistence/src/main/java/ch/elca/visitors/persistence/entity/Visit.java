@@ -55,8 +55,8 @@ public class Visit extends AuditModel {
     @JoinColumn(referencedColumnName = "id", name = "appointment_id")
     private Appointment appointment;
 
-//    @ManyToOne
-//    @JoinColumn(referencedColumnName = "id", name = "contact_id")
-//    private Contact contact;
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "id", name = "contact_id")
+    private Contact contact;
 
 }

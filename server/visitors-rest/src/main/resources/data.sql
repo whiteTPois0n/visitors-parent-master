@@ -1,20 +1,21 @@
-insert into role (id, role_name) values (1, 'ROLE_SUPERADMIN');
-insert into role (id, role_name) values (2, 'ROLE_ADMIN');
-insert into role (id, role_name) values (3, 'ROLE_HRSTAFF');
+--role tbl data
+insert into role (id, role_name) values (1, 'SUPERADMIN');
+insert into role (id, role_name) values (2, 'ADMIN');
+insert into role (id, role_name) values (3, 'HRSTAFF');
 
 
-
+--user tbl data
 insert into user (id, username, password, enabled, role_id) values (1, 'superadmin', '$2y$12$XGRfnkQbBySpb.XP.k9gWOwDCtmLBEcHvO0a8ql44jhIJFdjWUaDG', 1, 1);
 insert into user (id, username, password, enabled, role_id) values (2, 'hrstaff', '$2y$10$uNrUjUJHWiYYljbZN40.lOys3aaZ9EiVub0ImOJQg8xs92xyWtBA2', 1, 3);
 insert into user (id, username, password, enabled, role_id) values (3, 'admin', '$2y$12$xRwgnXLVoY6Kdw08AZPP.u2W1Ly1vsTZXnp6IhFM3dNsaUD82IOr2', 1, 2);
 
 
---contact
+--contact tbl data
 insert into contact (id, first_name, last_name, visa) values (1, 'Awad' , 'Luckhoo' , 'AWL');
 insert into contact (id, first_name, last_name, visa) values (2, 'Kenny', 'Kian Fat', 'KKF');
 
 
---visitor details
+--visitor tbl data
 insert into visitor (title, first_name, last_name, email, phone_number, address, organization) values ('Mr', 'Jack', 'Sparrow', 'jacksp@gmail.com', '78847562', '78977 Pirate Street', 'PirateInc');
 insert into visitor (title, first_name, last_name, email, phone_number, address, organization) values ('Ms', 'Saunderson', 'Dailly', 'sdailly1@gmail.com', '72572222', '98725 Luster Street', 'YombuOrg');
 insert into visitor (title, first_name, last_name, email, phone_number, address, organization) values ('Mr', 'Jack', 'Black', 'jack_black@gmail.com', '89475487', '82977 Nuby Nubs Street', 'JackCorp');
@@ -85,14 +86,53 @@ insert into visitor (title, first_name, last_name, email, phone_number, address,
 insert into visitor (title, first_name, last_name, email, phone_number, address, organization) values ('Ms', 'Dione', 'Criple', 'dcriple1l@g.co', '98678495', '94391 Hoepker Parkway', 'Aimbo');
 insert into visitor (title, first_name, last_name, email, phone_number, address, organization) values ('Mrs', 'Ellie', 'Snadden', 'esnadden1m@samsung.com', '26611544', '81 Hayes Alley', 'Skilith');
 
---appointment
+
+--appointment tbl data
 insert into appointment (id, job_title, factory, meeting_type, meeting_room, appointment_date, contact_id, visitor_id) values (1, 'Junior Software Engineer', 'JAVA', 'INTERVIEW', 'mu-room-515', '2021-01-11 11:00:00', 2, 13);
-insert into appointment (id, job_title, factory, meeting_type, meeting_room, appointment_date, contact_id, visitor_id) values (2, 'Senior Software Engineer', 'JAVA', 'CONTRACT', 'mu-room-520', '2021-01-12 12:00:00',1, 26);
-insert into appointment (id, job_title, factory, meeting_type, meeting_room, appointment_date, contact_id, visitor_id) values (3, 'Project Manager', 'DOTNET',  'INTERVIEW', 'mu-room-518', '2021-01-11 14:00:00', 2, 38);
---insert into appointment (id, job_title, factory, meeting_type, meeting_room, appointment_date) values (4, 'Junior Software Engineer', 'DOTNET', 'APTITUDE_TEST', 'mu-room-512', 4, '4/1/2020');
---insert into appointment (id, job_title, factory, meeting_type, meeting_room, appointment_date) values (5, 'Web Designer II', 'INTERVIEW', 'mu-room-518', 5, '9/17/2020');
---insert into appointment (id, job_title, factory, meeting_type, meeting_room, appointment_date) values (6, 'Desktop Support Technician', 'APTITUDE_TEST', 'mu-room-512', 6, '6/6/2020');
---insert into appointment (id, job_title, factory, meeting_type, meeting_room, appointment_date) values (7, 'Assistant Manager', 'INTERVIEW', 'mu-room-515', 7, '2/7/2020');
---insert into appointment (id, job_title, factory, meeting_type, meeting_room, appointment_date) values (8, 'Physical Therapy Assistant', 'APTITUDE_TEST', 'mu-room-512', 8, '11/29/2020');
---insert into appointment (id, job_title, factory, meeting_type, meeting_room, appointment_date) values (9, 'Project Manager','DOTNET', 'CONTRACT', 'mu-room-521', 9, '5/4/2020');
---insert into appointment (id, job_title, factory, meeting_type, meeting_room, appointment_date) values (10, 'Editor', 'INTERVIEW', 'mu-room-518', 10, '5/31/2020');
+insert into appointment (id, job_title, factory, meeting_type, meeting_room, appointment_date, contact_id, visitor_id) values (2, 'Senior Software Engineer', 'JAVA', 'CONTRACT', 'mu-room-520', '2021-01-12 12:00:00', 2, 26);
+insert into appointment (id, job_title, factory, meeting_type, meeting_room, appointment_date, contact_id, visitor_id) values (3, 'Project Manager', 'DOTNET',  'INTERVIEW', 'mu-room-518', '2021-01-11 14:00:00', 1, 38);
+insert into appointment (id, job_title, factory, meeting_type, meeting_room, appointment_date, contact_id, visitor_id) values (4, 'Junior Software Engineer', 'DOTNET', 'APTITUDE_TEST', 'mu-room-515', '2021-01-15 12:30:00', 1, 15);
+insert into appointment (id, job_title, factory, meeting_type, meeting_room, appointment_date, contact_id, visitor_id) values (5, 'Associate Architect', 'JAVA', 'INTERVIEW', 'mu-room-518', '2021-01-26 13:30:00', 2, 65);
+insert into appointment (id, job_title, factory, meeting_type, meeting_room, appointment_date, contact_id, visitor_id) values (6, 'Associate Software Engineer', 'JAVA', 'APTITUDE_TEST', 'mu-room-512', '2021-02-28 11:00:00', 2, 39);
+insert into appointment (id, job_title, factory, meeting_type, meeting_room, appointment_date, contact_id, visitor_id) values (7, 'Architect', 'JAVA', 'INTERVIEW', 'mu-room-515', '2021-02-02 10:30:00', 1, 26);
+insert into appointment (id, job_title, factory, meeting_type, meeting_room, appointment_date, contact_id, visitor_id) values (8, 'Associate Software Engineer', 'DOTNET','APTITUDE_TEST', 'mu-room-515', '2021-01-15 12:30:00', 1, 35);
+insert into appointment (id, job_title, factory, meeting_type, meeting_room, appointment_date, contact_id, visitor_id) values (9, 'Project Manager', 'DOTNET', 'CONTRACT', 'mu-room-521', '2021-02-18 11:30:00', 1, 26);
+insert into appointment (id, job_title, factory, meeting_type, meeting_room, appointment_date, contact_id, visitor_id) values (10, 'Architect', 'JAVA', 'INTERVIEW', 'mu-room-516', '2021-02-27 12:00:00', 2, 8);
+insert into appointment (id, job_title, factory, meeting_type, meeting_room, appointment_date, contact_id, visitor_id) values (11, 'Architect', 'DOTNET', 'APTITUDE_TEST', 'mu-room-517', '2021-02-23 11:00:00', 1, 5);
+
+--
+--insert into appointment (id, job_title, factory, meeting_type, meeting_room, appointment_date, contact_id, visitor_id) values (11, 'Junior Software Engineer', 'JAVA', 'INTERVIEW', 'mu-room-515', '2021-01-11 11:00:00', 2, 13);
+--insert into appointment (id, job_title, factory, meeting_type, meeting_room, appointment_date, contact_id, visitor_id) values (12, 'Senior Software Engineer', 'JAVA', 'CONTRACT', 'mu-room-520', '2021-01-12 12:00:00', 2, 26);
+--insert into appointment (id, job_title, factory, meeting_type, meeting_room, appointment_date, contact_id, visitor_id) values (13, 'Project Manager', 'DOTNET',  'INTERVIEW', 'mu-room-518', '2021-01-11 14:00:00', 1, 38);
+--insert into appointment (id, job_title, factory, meeting_type, meeting_room, appointment_date, contact_id, visitor_id) values (14, 'Junior Software Engineer', 'DOTNET', 'APTITUDE_TEST', 'mu-room-515', '2021-01-15 12:30:00', 1, 15);
+--insert into appointment (id, job_title, factory, meeting_type, meeting_room, appointment_date, contact_id, visitor_id) values (15, 'Associate Architect', 'JAVA', 'INTERVIEW', 'mu-room-518', '2021-01-26 13:30:00', 2, 65);
+--insert into appointment (id, job_title, factory, meeting_type, meeting_room, appointment_date, contact_id, visitor_id) values (16, 'Associate Software Engineer', 'JAVA', 'APTITUDE_TEST', 'mu-room-512', '2021-02-28 11:00:00', 2, 39);
+--insert into appointment (id, job_title, factory, meeting_type, meeting_room, appointment_date, contact_id, visitor_id) values (17, 'Architect', 'JAVA', 'INTERVIEW', 'mu-room-515', '2021-02-02 10:30:00', 1, 26);
+--insert into appointment (id, job_title, factory, meeting_type, meeting_room, appointment_date, contact_id, visitor_id) values (18, 'Associate Software Engineer', 'DOTNET','APTITUDE_TEST', 'mu-room-515', '2021-01-15 12:30:00', 1, 35);
+--insert into appointment (id, job_title, factory, meeting_type, meeting_room, appointment_date, contact_id, visitor_id) values (19, 'Project Manager', 'DOTNET', 'CONTRACT', 'mu-room-521', '2021-02-18 11:30:00', 1, 26);
+--insert into appointment (id, job_title, factory, meeting_type, meeting_room, appointment_date, contact_id, visitor_id) values (20, 'Architect', 'JAVA', 'INTERVIEW', 'mu-room-516', '2021-02-27 12:00:00', 2, 8);
+--
+--
+--insert into appointment (id, job_title, factory, meeting_type, meeting_room, appointment_date, contact_id, visitor_id) values (21, 'Junior Software Engineer', 'JAVA', 'INTERVIEW', 'mu-room-515', '2021-01-11 11:00:00', 2, 13);
+--insert into appointment (id, job_title, factory, meeting_type, meeting_room, appointment_date, contact_id, visitor_id) values (22, 'Senior Software Engineer', 'JAVA', 'CONTRACT', 'mu-room-520', '2021-01-12 12:00:00', 2, 26);
+--insert into appointment (id, job_title, factory, meeting_type, meeting_room, appointment_date, contact_id, visitor_id) values (23, 'Project Manager', 'DOTNET',  'INTERVIEW', 'mu-room-518', '2021-01-11 14:00:00', 1, 38);
+--insert into appointment (id, job_title, factory, meeting_type, meeting_room, appointment_date, contact_id, visitor_id) values (24, 'Junior Software Engineer', 'DOTNET', 'APTITUDE_TEST', 'mu-room-515', '2021-01-15 12:30:00', 1, 15);
+--insert into appointment (id, job_title, factory, meeting_type, meeting_room, appointment_date, contact_id, visitor_id) values (25, 'Associate Architect', 'JAVA', 'INTERVIEW', 'mu-room-518', '2021-01-26 13:30:00', 2, 65);
+--insert into appointment (id, job_title, factory, meeting_type, meeting_room, appointment_date, contact_id, visitor_id) values (26, 'Associate Software Engineer', 'JAVA', 'APTITUDE_TEST', 'mu-room-512', '2021-02-28 11:00:00', 2, 39);
+--insert into appointment (id, job_title, factory, meeting_type, meeting_room, appointment_date, contact_id, visitor_id) values (27, 'Architect', 'JAVA', 'INTERVIEW', 'mu-room-515', '2021-02-02 10:30:00', 1, 26);
+--insert into appointment (id, job_title, factory, meeting_type, meeting_room, appointment_date, contact_id, visitor_id) values (28, 'Associate Software Engineer', 'DOTNET','APTITUDE_TEST', 'mu-room-515', '2021-01-15 12:30:00', 1, 35);
+--insert into appointment (id, job_title, factory, meeting_type, meeting_room, appointment_date, contact_id, visitor_id) values (29, 'Project Manager', 'DOTNET', 'CONTRACT', 'mu-room-521', '2021-02-18 11:30:00', 1, 26);
+--insert into appointment (id, job_title, factory, meeting_type, meeting_room, appointment_date, contact_id, visitor_id) values (30, 'Architect', 'JAVA', 'INTERVIEW', 'mu-room-516', '2021-02-27 12:00:00', 2, 8);
+
+
+--visit tbl data
+insert into visit (id, visitor_type, reason_of_visit, badge_number, temperature, checked_in_time, checked_out_time, visitor_id, appointment_id, contact_id) values (1, 'PARTNER', 'Reason A', '0021584900', 36.6, '2020-10-15 11:47:02', '2020-10-15 16:04:21', 31, 8, 1);
+insert into visit (id, visitor_type, reason_of_visit, badge_number, temperature, checked_in_time, checked_out_time, visitor_id, appointment_id, contact_id) values (2, 'CUSTOMER', 'Reason B', '0027235790', 37.1, '2020-11-15 05:54:25', '2020-11-25 15:58:46', 2, 4, 2);
+insert into visit (id, visitor_type, reason_of_visit, badge_number, temperature, checked_in_time, checked_out_time, visitor_id, appointment_id, contact_id) values (3, 'CANDIDATE', 'Reason C', '0028536025', 35.5, '2020-10-01 03:18:49', '2020-11-25 22:06:24', 23, 6, 2);
+insert into visit (id, visitor_type, reason_of_visit, badge_number, temperature, checked_in_time, checked_out_time, visitor_id, appointment_id, contact_id) values (4, 'CANDIDATE', 'Reason D', '0022709265', 38.3, '2020-11-14 17:27:51', '2020-11-18 23:18:43', 46, 3, 2);
+insert into visit (id, visitor_type, reason_of_visit, badge_number, temperature, checked_in_time, checked_out_time, visitor_id, appointment_id, contact_id) values (5, 'OTHER', 'Reason E', '0025096999', 39.5, '2020-10-11 05:33:26', '2020-10-03 06:52:46', 51, 5, 1);
+insert into visit (id, visitor_type, reason_of_visit, badge_number, temperature, checked_in_time, checked_out_time, visitor_id, appointment_id, contact_id) values (6, 'CANDIDATE', 'Reason F', '0035584656', 36.7, '2020-11-12 01:41:34', '2020-11-11 12:19:24', 6, 7, 1);
+insert into visit (id, visitor_type, reason_of_visit, badge_number, temperature, checked_in_time, checked_out_time, visitor_id, appointment_id, contact_id) values (7, 'CANDIDATE', 'Reason G', '0022058284', 39.9, '2020-11-13 13:12:30', '2020-11-17 20:29:02', 68, 1, 2);
+insert into visit (id, visitor_type, reason_of_visit, badge_number, temperature, checked_in_time, checked_out_time, visitor_id, appointment_id, contact_id) values (8, 'CUSTOMER', 'Reason H', '0021917021', 35.1, '2020-11-26 15:38:46', '2020-10-05 21:14:03', 48, 2, null);
+insert into visit (id, visitor_type, reason_of_visit, badge_number, temperature, checked_in_time, checked_out_time, visitor_id, appointment_id, contact_id) values (9, 'CANDIDATE', 'Reason I', '0035553675', 38.2, '2020-10-29 03:07:47', '2020-11-28 13:18:28', 29, 9, null);
+insert into visit (id, visitor_type, reason_of_visit, badge_number, temperature, checked_in_time, checked_out_time, visitor_id, appointment_id, contact_id) values (10, 'PROVIDER', 'Reason K', '0035766352', 37.8, '2020-11-22 16:13:44', '2020-11-26 16:40:24', 10, null, null);

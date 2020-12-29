@@ -2,7 +2,7 @@ package ch.elca.visitors.service.service.impl;
 
 import ch.elca.visitors.persistence.entity.QVisitor;
 import ch.elca.visitors.persistence.repository.VisitorRepository;
-import ch.elca.visitors.service.Utils.IteratorUtil;
+import ch.elca.visitors.service.utils.IteratorUtil;
 import ch.elca.visitors.service.dto.VisitorDto;
 import ch.elca.visitors.service.exception.ResourceNotFoundException;
 import ch.elca.visitors.service.mapper.VisitorMapper;
