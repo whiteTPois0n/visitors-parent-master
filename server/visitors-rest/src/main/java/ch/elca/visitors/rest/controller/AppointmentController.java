@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +25,6 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
-@Validated
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/appointment")
@@ -36,7 +36,7 @@ public class AppointmentController {
 
 
     @PostMapping("/create")
-    public AppointmentDto addAppointment(@Valid @RequestBody AppointmentDto appointmentDto) {
+    public AppointmentDto addAppointment(@RequestBody AppointmentDto appointmentDto) {
         return appointmentService.addAppointment(appointmentDto);
     }
 
@@ -44,6 +44,12 @@ public class AppointmentController {
     @GetMapping("/{id}")
     public AppointmentDto findAppointment(@PathVariable("id") Long id) {
         return appointmentService.findAppointment(id);
+    }
+
+
+    @DeleteMapping("/delete/{id}")
+    public void deleteAppointmentById(@PathVariable Long id) {
+        appointmentService.deleteAppointment(id);
     }
 
 

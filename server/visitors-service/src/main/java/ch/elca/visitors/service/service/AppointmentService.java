@@ -15,6 +15,8 @@ public interface AppointmentService {
 
     AppointmentDto findAppointment(Long id);
 
+    void deleteAppointment (Long id);
+
     Page<AppointmentDto> getAllAppointments(PageRequest pageRequest);
 
     List<AppointmentDto> searchAppointmentsByVisitorNameOrEmail(String search);

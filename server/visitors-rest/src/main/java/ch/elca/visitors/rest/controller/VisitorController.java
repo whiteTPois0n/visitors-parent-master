@@ -19,7 +19,6 @@ import javax.validation.Valid;
 import java.util.List;
 
 
-@Validated
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/visitor")
@@ -30,7 +29,7 @@ public class VisitorController {
 
 
     @PostMapping("/create")
-    public VisitorDto addVisitor(@Valid @RequestBody VisitorDto visitorDto) {
+    public VisitorDto addVisitor(@RequestBody VisitorDto visitorDto) {
         return visitorService.addVisitor(visitorDto);
     }
 

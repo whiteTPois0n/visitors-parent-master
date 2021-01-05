@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
-@Validated
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/visit")
@@ -36,7 +35,7 @@ public class VisitController {
 
 
     @PostMapping("/create")
-    public VisitDto addVisit(@Valid @RequestBody VisitDto visitDto) {
+    public VisitDto addVisit(@RequestBody VisitDto visitDto) {
         return visitService.addVisit(visitDto);
     }
 
@@ -58,8 +57,9 @@ public class VisitController {
 
 
     @GetMapping("/checkout")
-    public void checkoutVisit(@RequestParam(required = true) Long visitId) {
-        visitService.checkoutVisit(visitId);
+    public void checkoutVisit(@RequestParam Long visitId,
+                              @RequestParam String badgeNumber) {
+        visitService.checkoutVisit(visitId, badgeNumber);
     }
 
 

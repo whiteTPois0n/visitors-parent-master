@@ -85,11 +85,17 @@ public class VisitServiceImpl implements VisitService {
     }
 
 
-    public void checkoutVisit(Long visitId) {
+    public void checkoutVisit(Long visitId, String badgeNumber) {
 
         var visit = visitRepository.findById(visitId).orElseThrow(() -> new ResourceNotFoundException("No visit found with id " + visitId));
-        visit.setCheckedOut(LocalDateTime.now());
-        visitRepository.save(visit);
+
+        // verify if badgeNumber valid before updating check out time
+        if (visit.getBadgeNumber().equals(badgeNumber)) {
+            visit.setCheckedOut(LocalDateTime.now());
+            visitRepository.save(visit);
+        } else {
+            throw new ResourceNotFoundException("Badge number " + badgeNumber + " invalid");
+        }
     }
 
 

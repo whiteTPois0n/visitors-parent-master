@@ -15,7 +15,7 @@ public interface VisitService {
 
     Page<VisitDto> getAllVisits(PageRequest pageRequest);
 
-    void checkoutVisit(Long visitId);
+    void checkoutVisit(Long visitId, String badgeNumber);
 
     List<VisitDto> searchActiveVisitsByVisitorNameOrEmail(String search);
 

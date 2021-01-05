@@ -1,8 +1,10 @@
 package ch.elca.visitors.service.service.impl;
 
 import ch.elca.visitors.persistence.entity.QAppointment;
+import ch.elca.visitors.persistence.entity.QVisit;
 import ch.elca.visitors.persistence.repository.AppointmentRepository;
 import ch.elca.visitors.persistence.repository.ContactRepository;
+import ch.elca.visitors.persistence.repository.VisitRepository;
 import ch.elca.visitors.persistence.repository.VisitorRepository;
 import ch.elca.visitors.service.dto.AppointmentDto;
 import ch.elca.visitors.service.excel.AppointmentExporter;
@@ -32,6 +34,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     public final AppointmentRepository appointmentRepository;
     public final VisitorRepository visitorRepository;
+    public final VisitRepository visitRepository;
     public final ContactRepository contactRepository;
     public final AppointmentMapper appointmentMapper;
 
@@ -53,6 +56,18 @@ public class AppointmentServiceImpl implements AppointmentService {
     public AppointmentDto findAppointment(Long id) {
         var appointment = appointmentRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Oops something went wrong, appointment with id " + id + " not found"));
         return appointmentMapper.mapToAppointmentDto(appointment);
+    }
+
+
+    public void deleteAppointment(Long id) {
+        var qVisit = QVisit.visit;
+        var predicate = new BooleanBuilder();
+
+        visitRepository.findOne(predicate.and(qVisit.appointment.id.eq(id))).ifPresent(
+                visit1 -> visit1.setAppointment(null));
+
+        var existingAppointment = appointmentRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Oops something went wrong, appointment with id " + id + " not found"));
+        appointmentRepository.delete(existingAppointment);
     }
 
 
