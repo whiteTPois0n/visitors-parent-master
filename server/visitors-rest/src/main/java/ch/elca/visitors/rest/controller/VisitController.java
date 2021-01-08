@@ -8,7 +8,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
@@ -110,5 +108,28 @@ public class VisitController {
     }
 
 
+    @GetMapping("/current-day-visits")
+    public long countNumberOfVisitsToday() {
+        return visitService.countNumberOfVisitsToday();
+    }
+
+
+    @GetMapping("/past-day-visits")
+    public long countNumberOfVisitsYesterday() {
+        return visitService.countNumberOfVisitsYesterday();
+    }
+
+
+    @GetMapping("/past-month-visits")
+    public long countNumberOfPastMonthVisits(@RequestParam
+                                             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate today) {
+        return visitService.countNumberOfPastMonthVisits(today);
+    }
+
+
+    @GetMapping("/past-year-visits")
+    public long countNumberOfVisitsThisYear() {
+        return visitService.countNumberOfPastYearVisits();
+    }
 }
 

@@ -1,5 +1,6 @@
 package ch.elca.visitors.persistence.entity;
 
+import ch.elca.visitors.persistence.enumeration.RoleEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,6 +29,6 @@ public class Role {
 
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false, length = 100)
-    private ch.elca.visitors.persistence.enumeration.Role roleName;
+    private RoleEnum roleName;
 
 }

@@ -13,6 +13,7 @@ import ch.elca.visitors.service.mapper.VisitMapper;
 import ch.elca.visitors.service.service.VisitService;
 import ch.elca.visitors.service.utils.IteratorUtil;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -156,6 +157,27 @@ public class VisitServiceImpl implements VisitService {
         visitExporter.export(response);
     }
 
+    @Override
+    public long countNumberOfVisitsToday() {
+        return visitRepository.count(buildCountNumberOfVisitsTodayPredicate());
+    }
+
+    @Override
+    public long countNumberOfVisitsYesterday() {
+        return visitRepository.count(buildCountNumberOfVisitsYesterdayPredicate());
+    }
+
+
+    @Override
+    public long countNumberOfPastMonthVisits(LocalDate today) {
+        return visitRepository.count(buildCountNumberOfPastMonthVisitsPredicate(today));
+    }
+
+    @Override
+    public long countNumberOfPastYearVisits() {
+        return visitRepository.count(buildCountNumberOfPastYearVisitsPredicate());
+    }
+
 
     private BooleanBuilder buildSearchActiveVisitorsPredicate() {
         var qVisit = QVisit.visit;
@@ -220,6 +242,69 @@ public class VisitServiceImpl implements VisitService {
         }
 
         return predicate;
+    }
+
+
+    private BooleanBuilder buildCountNumberOfVisitsTodayPredicate() {
+
+        var qVisit = QVisit.visit;
+        var predicate = new BooleanBuilder();
+
+        LocalDateTime dateTimeStartToday = LocalDate.now().atStartOfDay();
+        LocalDateTime dateTimeEndToday = LocalDate.now().atTime(23, 59, 59);
+
+        return predicate
+//                .and(qVisit.checkedOut.isNull().or(qVisit.checkedIn.isNotNull()))
+                .and(qVisit.checkedIn.between(dateTimeStartToday, dateTimeEndToday));
+    }
+
+
+    private BooleanBuilder buildCountNumberOfVisitsYesterdayPredicate() {
+
+        var qVisit= QVisit.visit;
+        var predicate = new BooleanBuilder();
+
+        LocalDateTime dateTimeStartYesterday = LocalDate.now().minusDays(1).atStartOfDay();
+        LocalDateTime dateTimeEndYesterday = LocalDate.now().minusDays(1).atTime(23, 59, 59);
+
+        return predicate
+                .and(qVisit.checkedIn.between(dateTimeStartYesterday, dateTimeEndYesterday));
+    }
+
+
+    private BooleanBuilder buildCountNumberOfPastMonthVisitsPredicate(LocalDate today) {
+
+        var qVisit = QVisit.visit;
+        var predicate = new BooleanBuilder();
+        var month = today.getMonth();
+        var year = today.getYear();
+        var pastMonth = month.minus(1);
+
+        var pastMonthDateBegin = LocalDate.of(today.getYear(), pastMonth, 1).atStartOfDay();
+        var lastDayOfPreviousMonth = pastMonthDateBegin.toLocalDate().lengthOfMonth();
+        var pastMonthDateEnd = LocalDate.of(today.getYear(), pastMonth, lastDayOfPreviousMonth).atTime(23, 59, 59);
+
+        if (today.getMonth().getValue() == 1){
+            var pastYear = year-1;
+            pastMonthDateBegin = LocalDate.of(pastYear, pastMonth, 1).atStartOfDay();
+            pastMonthDateEnd = LocalDate.of(pastYear, pastMonth, lastDayOfPreviousMonth).atTime(23, 59, 59);
+        }
+
+        return predicate
+                .and(qVisit.checkedOut.between(pastMonthDateBegin, pastMonthDateEnd));
+    }
+
+
+    private BooleanBuilder buildCountNumberOfPastYearVisitsPredicate() {
+        var qVisit= QVisit.visit;
+        var predicate = new BooleanBuilder();
+
+        var pastYear = LocalDate.now().getYear()-1;
+        var pastYearStart = LocalDate.of(pastYear, 1, 1).atStartOfDay();
+        var pastYearYearEnd = LocalDate.of(pastYear, 12, 31).atTime(23,59,59);
+
+        return predicate
+                .and(qVisit.checkedIn.between(pastYearStart, pastYearYearEnd));
     }
 
 }

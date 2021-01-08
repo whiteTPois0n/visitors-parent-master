@@ -3,6 +3,8 @@ package ch.elca.visitors.service.service;
 import ch.elca.visitors.service.dto.VisitDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -28,5 +30,13 @@ public interface VisitService {
     void exportListOfActiveVisitors(HttpServletResponse response) throws IOException;
 
     void exportListOfPastVisitors(HttpServletResponse response, LocalDate dateFrom) throws IOException;
+
+    long countNumberOfVisitsToday();
+
+    long countNumberOfVisitsYesterday();
+
+    long countNumberOfPastMonthVisits(LocalDate today);
+
+    long countNumberOfPastYearVisits();
 
 }

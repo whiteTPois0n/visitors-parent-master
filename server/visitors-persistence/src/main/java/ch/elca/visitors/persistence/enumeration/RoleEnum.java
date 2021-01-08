@@ -1,7 +1,6 @@
 package ch.elca.visitors.persistence.enumeration;
 
-public enum Role {
+public enum RoleEnum {
     ADMIN,
-    EMPLOYEE,
-    MANAGER
+    HRSTAFF
 }
