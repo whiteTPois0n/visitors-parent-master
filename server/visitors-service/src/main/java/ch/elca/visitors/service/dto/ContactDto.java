@@ -19,4 +19,6 @@ public class ContactDto {
 
     private String visa;
 
+    private Integer phoneNumber;
+
 }

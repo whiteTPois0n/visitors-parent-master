@@ -8,11 +8,13 @@ insert into role (id, role_name) values (3, 'HRSTAFF');
 insert into user (id, username, password, enabled, role_id) values (1, 'superadmin', '$2y$12$XGRfnkQbBySpb.XP.k9gWOwDCtmLBEcHvO0a8ql44jhIJFdjWUaDG', 1, 1);
 insert into user (id, username, password, enabled, role_id) values (2, 'hrstaff', '$2y$10$uNrUjUJHWiYYljbZN40.lOys3aaZ9EiVub0ImOJQg8xs92xyWtBA2', 1, 3);
 insert into user (id, username, password, enabled, role_id) values (3, 'admin', '$2y$12$xRwgnXLVoY6Kdw08AZPP.u2W1Ly1vsTZXnp6IhFM3dNsaUD82IOr2', 1, 2);
+insert into user (id, username, password, enabled, role_id) values (4, 'Azhar', '$2y$12$tsMXnCycYpBZGGh1oW2a0.JYxqMZGkpNE/FWf1KFRoaetSRQNA1Qq', 1, 2);
+
 
 
 --contact tbl data
-insert into contact (id, first_name, last_name, visa) values (1, 'Awad' , 'Luckhoo' , 'AWL');
-insert into contact (id, first_name, last_name, visa) values (2, 'Kenny', 'Kian Fat', 'KKF');
+insert into contact (id, first_name, last_name, visa, phone_number) values (1, 'Awad' , 'Luckhoo' , 'AWL', '57444444');
+insert into contact (id, first_name, last_name, visa, phone_number) values (2, 'Kenny', 'Kian Fat', 'WKK', '57725970');
 
 
 --visitor tbl data
@@ -113,11 +115,11 @@ insert into appointment (id, job_title, factory, meeting_type, meeting_room, app
 insert into visit (id, visitor_type, reason_of_visit, badge_number, temperature, checked_in_time, checked_out_time, visitor_id, appointment_id, contact_id) values (1, 'CANDIDATE', 'Aptitude test', '0021584900', 36.6, '2020-01-15 12:25:05', '2020-01-15 13:31:15', 35, 8, null);
 insert into visit (id, visitor_type, reason_of_visit, badge_number, temperature, checked_in_time, checked_out_time, visitor_id, appointment_id, contact_id) values (2, 'CANDIDATE', 'Aptitude test', '0027235790', 37.1, '2020-01-15 12:28:26', '2020-01-15 14:01:16', 15, 4, null);
 insert into visit (id, visitor_type, reason_of_visit, badge_number, temperature, checked_in_time, checked_out_time, visitor_id, appointment_id, contact_id) values (3, 'CANDIDATE', 'Aptitude test', '0028536025', 35.5, '2020-02-28 11:02:10', '2020-02-28 12:30:07', 39, 6, null);
-insert into visit (id, visitor_type, reason_of_visit, badge_number, temperature, checked_in_time, checked_out_time, visitor_id, appointment_id, contact_id) values (4, 'CANDIDATE', 'Job interview', '0022709265', 38.3, '2020-01-11 13:54:41', '2020-01-11 14:46:09', 38, 3, null);
+insert into visit (id, visitor_type, reason_of_visit, badge_number, temperature, checked_in_time, checked_out_time, visitor_id, appointment_id, contact_id) values (4, 'CANDIDATE', 'Job interview', '0022709265', 38.3, '2021-01-11 13:54:41', '2021-01-11 14:46:09', 38, 3, null);
 insert into visit (id, visitor_type, reason_of_visit, badge_number, temperature, checked_in_time, checked_out_time, visitor_id, appointment_id, contact_id) values (5, 'CANDIDATE', 'Job interview', '0025096999', 39.5, '2020-01-26 13:29:30', '2020-01-26 14:24:14', 65, 5, null);
-insert into visit (id, visitor_type, reason_of_visit, badge_number, temperature, checked_in_time, checked_out_time, visitor_id, appointment_id, contact_id) values (6, 'CANDIDATE', 'Aptitude test', '0021917021', 35.1, '2020-01-12 12:03:48', '2020-01-12 12:32:52', 26, 2, null);
-insert into visit (id, visitor_type, reason_of_visit, badge_number, temperature, checked_in_time, checked_out_time, visitor_id, appointment_id, contact_id) values (7, 'CANDIDATE', 'Job interview', '0022058284', 39.9, '2020-01-11 11:05:51', '2020-01-11 11:40:20', 13, 1, null);
-insert into visit (id, visitor_type, reason_of_visit, badge_number, temperature, checked_in_time, checked_out_time, visitor_id, appointment_id, contact_id) values (8, 'CANDIDATE', 'Job interview', '0021917021', 36.7, '2020-02-02 10:30:05', '2020-02-02 11:16:06', 26, 7, null);
+insert into visit (id, visitor_type, reason_of_visit, badge_number, temperature, checked_in_time, checked_out_time, visitor_id, appointment_id, contact_id) values (6, 'CANDIDATE', 'Aptitude test', '0021917021', 35.1, '2021-01-12 12:03:48', '2021-01-12 12:32:52', 26, 2, null);
+insert into visit (id, visitor_type, reason_of_visit, badge_number, temperature, checked_in_time, checked_out_time, visitor_id, appointment_id, contact_id) values (7, 'CANDIDATE', 'Job interview', '0022058284', 39.9, '2021-01-10 11:05:51', '2021-01-10 11:40:20', 13, 1, null);
+insert into visit (id, visitor_type, reason_of_visit, badge_number, temperature, checked_in_time, checked_out_time, visitor_id, appointment_id, contact_id) values (8, 'CANDIDATE', 'Job interview', '0021917021', 36.7, '2020-07-02 10:30:05', '2020-07-02 11:16:06', 26, 7, null);
 insert into visit (id, visitor_type, reason_of_visit, badge_number, temperature, checked_in_time, checked_out_time, visitor_id, appointment_id, contact_id) values (9, 'CANDIDATE', 'Job offer', '0021917021', 38.2, '2020-02-18 11:29:19', '2020-02-18 12:04:27', 26, 9, null);
 insert into visit (id, visitor_type, reason_of_visit, badge_number, temperature, checked_in_time, checked_out_time, visitor_id, appointment_id, contact_id) values (10, 'CANDIDATE', 'Interview', '0035584656', 36.7, '2020-02-27 12:16:01', '2020-02-27 13:02:10', 8, 10, null);
 insert into visit (id, visitor_type, reason_of_visit, badge_number, temperature, checked_in_time, checked_out_time, visitor_id, appointment_id, contact_id) values (11, 'CANDIDATE', 'Aptitude test', '0022058284', 39.9, '2020-02-23 11:01:25', '2020-02-23 12:33:13', 5, 11, null);
@@ -126,10 +128,10 @@ insert into visit (id, visitor_type, reason_of_visit, badge_number, temperature,
 insert into visit (id, visitor_type, reason_of_visit, badge_number, temperature, checked_in_time, checked_out_time, visitor_id, appointment_id, contact_id) values (12, 'CUSTOMER', 'Reason', '0022058284', 39.9, '2020-11-13 13:12:30', '2020-11-17 20:29:02', 17, null, 2);
 insert into visit (id, visitor_type, reason_of_visit, badge_number, temperature, checked_in_time, checked_out_time, visitor_id, appointment_id, contact_id) values (13, 'CUSTOMER', 'Reason', '0021917021', 35.1, '2020-11-26 15:38:46', '2020-10-05 21:14:03', 20, null, 1);
 insert into visit (id, visitor_type, reason_of_visit, badge_number, temperature, checked_in_time, checked_out_time, visitor_id, appointment_id, contact_id) values (14, 'PARTNER', 'Reason', '0035553675', 38.2, '2020-10-29 03:07:47', '2020-11-28 13:18:28', 44, null, 1);
-insert into visit (id, visitor_type, reason_of_visit, badge_number, temperature, checked_in_time, checked_out_time, visitor_id, appointment_id, contact_id) values (15, 'PARTNER', 'Reason', '0035584656', 36.7, '2020-11-12 01:41:34', '2020-11-11 12:19:24', 66, null, 2);
+insert into visit (id, visitor_type, reason_of_visit, badge_number, temperature, checked_in_time, checked_out_time, visitor_id, appointment_id, contact_id) values (15, 'PARTNER', 'Reason', '0035584656', 36.7, '2020-02-12 01:41:34', '2020-02-11 12:19:24', 66, null, 2);
 insert into visit (id, visitor_type, reason_of_visit, badge_number, temperature, checked_in_time, checked_out_time, visitor_id, appointment_id, contact_id) values (16, 'PARTNER', 'Reason', '0022058284', 39.9, '2020-11-13 13:12:30', '2020-11-17 20:29:02', 11, null, 1);
 
 --visits with neither an appointment nor contact (x1 PROVIDER) (Fruit delivery every monday)
-insert into visit (id, visitor_type, reason_of_visit, badge_number, temperature, checked_in_time, checked_out_time, visitor_id, appointment_id, contact_id) values (18, 'PROVIDER', 'Fruit delivery', '0035766352', 37.7, '2020-11-30 10:03:44', '2020-11-30 10:23:22', 51, null, null);
+insert into visit (id, visitor_type, reason_of_visit, badge_number, temperature, checked_in_time, checked_out_time, visitor_id, appointment_id, contact_id) values (18, 'PROVIDER', 'Fruit delivery', '0035766352', 37.7, '2020-03-30 10:03:44', '2020-03-30 10:23:22', 51, null, null);
 insert into visit (id, visitor_type, reason_of_visit, badge_number, temperature, checked_in_time, checked_out_time, visitor_id, appointment_id, contact_id) values (19, 'PROVIDER', 'Fruit delivery', '0035766352', 37.5, '2020-12-07 10:01:07', '2020-12-07 10:21:12', 51, null, null);
 insert into visit (id, visitor_type, reason_of_visit, badge_number, temperature, checked_in_time, checked_out_time, visitor_id, appointment_id, contact_id) values (20, 'PROVIDER', 'Fruit delivery', '0035766352', 36.8, '2020-12-14 10:03:15', '2020-12-14 10:26:17', 51, null, null);

@@ -33,4 +33,7 @@ public class Contact {
     @Column(name = "visa", nullable = false, length = 3)
     private String visa;
 
+    @Column(name = "phone_number", nullable = false, length = 8)
+    private Integer phoneNumber;
+
 }

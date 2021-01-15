@@ -4,6 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+
     <parent>
         <artifactId>visitors-server</artifactId>
         <groupId>ch.elca.visitors</groupId>
@@ -54,7 +55,38 @@
             <artifactId>spring-boot-starter-jdbc</artifactId>
             <version>2.3.5.RELEASE</version>
         </dependency>
-        
+
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.heroku.sdk</groupId>
+                <artifactId>heroku-maven-plugin</artifactId>
+                <version>3.0.4</version>
+                <configuration>
+                    <appName>elca-visitor-management-system</appName>
+                    <jdkVersion>11</jdkVersion>
+                    <includeTarget>false</includeTarget>
+                    <includes>
+                        <include>target/visitors-rest-0.0.1-SNAPSHOT.jar</include>
+                    </includes>
+                    <processTypes>
+                        <web>java -jar target/visitors-rest-0.0.1-SNAPSHOT.jar</web>
+                    </processTypes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

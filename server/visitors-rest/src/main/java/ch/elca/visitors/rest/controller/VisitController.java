@@ -3,6 +3,7 @@ package ch.elca.visitors.rest.controller;
 import ch.elca.visitors.persistence.entity.QVisit;
 import ch.elca.visitors.service.dto.VisitDto;
 import ch.elca.visitors.service.service.VisitService;
+import com.google.zxing.WriterException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,7 +34,7 @@ public class VisitController {
 
 
     @PostMapping("/create")
-    public VisitDto addVisit(@RequestBody VisitDto visitDto) {
+    public VisitDto addVisit(@RequestBody VisitDto visitDto) throws IOException, WriterException {
         return visitService.addVisit(visitDto);
     }
 
@@ -130,6 +131,16 @@ public class VisitController {
     @GetMapping("/past-year-visits")
     public long countNumberOfVisitsThisYear() {
         return visitService.countNumberOfPastYearVisits();
+    }
+
+    @GetMapping("/past-year-visits-statistics")
+    public List<Long> pastYearVisitorStatistics() {
+        return visitService.pastYearVisitorStatistics();
+    }
+
+    @GetMapping("/current-year-visits-statistics")
+    public List<Long> currentYearVisitorStatistics() {
+        return visitService.currentYearVisitorStatistics();
     }
 }
 

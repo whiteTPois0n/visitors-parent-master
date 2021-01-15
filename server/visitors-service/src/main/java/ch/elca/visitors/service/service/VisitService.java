@@ -1,10 +1,9 @@
 package ch.elca.visitors.service.service;
 
 import ch.elca.visitors.service.dto.VisitDto;
+import com.google.zxing.WriterException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -13,7 +12,7 @@ import java.util.List;
 
 public interface VisitService {
 
-    VisitDto addVisit(VisitDto visitDto);
+    VisitDto addVisit(VisitDto visitDto) throws IOException, WriterException;
 
     Page<VisitDto> getAllVisits(PageRequest pageRequest);
 
@@ -38,5 +37,10 @@ public interface VisitService {
     long countNumberOfPastMonthVisits(LocalDate today);
 
     long countNumberOfPastYearVisits();
+
+    List<Long> pastYearVisitorStatistics();
+
+    List<Long> currentYearVisitorStatistics();
+
 
 }
