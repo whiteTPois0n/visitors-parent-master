@@ -32,25 +32,23 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 @Service
 @RequiredArgsConstructor
 public class VisitServiceImpl implements VisitService {
 
+    private static final String QR_CODE_IMAGE_PATH = "C://Users//AAH//Desktop//QR_code_gen//QR_sample.png//";
+    private static final Integer QR_CODE_IMAGE_WIDTH = 120;
+    private static final Integer QR_CODE_IMAGE_HEIGHT = 120;
+    private static final Logger LOGGER = LoggerFactory.getLogger(TwilioSmsServiceImpl.class);
     private final VisitRepository visitRepository;
     private final AppointmentRepository appointmentRepository;
     private final ContactRepository contactRepository;
     private final VisitorRepository visitorRepository;
-
     private final TwilioSmsService twilioService;
     private final QrCodeGenService qrCodeGenService;
-
     private final VisitMapper visitMapper;
-    private static final String QR_CODE_IMAGE_PATH = "C://Users//AAH//Desktop//QR_code_gen//QR_sample.png//";
-    private static final Integer QR_CODE_IMAGE_WIDTH = 120;
-    private static final Integer QR_CODE_IMAGE_HEIGHT = 120;
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(TwilioSmsServiceImpl.class);
 //    private final String QR_CODE_IMAGE_PATH = String.valueOf(getClass().getResourceAsStream("/generated"));
 
     public VisitDto addVisit(VisitDto visitDto) throws IOException, WriterException {
@@ -89,15 +87,19 @@ public class VisitServiceImpl implements VisitService {
         }
 
 //        twilio api send message to host if present
-//        contactRepository.findById(visitDto.getContact().getId()).ifPresent(contact -> {
-//                    String message = "Your visitor " + visitDto.getVisitor().getLastName() + " " + visitDto.getVisitor().getFirstName() + " has arrived and is waiting for you in the lobby";
-//                    twilioService.sendSms(contact.getPhoneNumber(), message);
-//                }
-//        );
+//        if (Objects.nonNull(visitDto.getContact().getId())) {
+//            contactRepository.findById(visitDto.getContact().getId()).ifPresent(contact -> {
+//                        String message = "Your visitor " + visitDto.getVisitor().getLastName() + " " + visitDto.getVisitor().getFirstName() + " has arrived and is waiting for you in the lobby";
+//                        twilioService.sendSms(contact.getPhoneNumber(), message);
+//                    }
+//            );
+//        }
 
         var saved = visitRepository.save(visit);
-        var data = saved.getId() + " " + saved.getBadgeNumber();
-        qrCodeGenService.generateQrCode(data, QR_CODE_IMAGE_PATH, QR_CODE_IMAGE_WIDTH,QR_CODE_IMAGE_HEIGHT);
+//        var data = saved.getId() + " " + saved.getBadgeNumber();
+        var data = saved.getBadgeNumber();
+
+        qrCodeGenService.generateQrCode(data, QR_CODE_IMAGE_PATH, QR_CODE_IMAGE_WIDTH, QR_CODE_IMAGE_HEIGHT);
         LOGGER.info("Qr Code generated with badgeId: " + saved.getBadgeNumber());
         return visitMapper.mapToVisitDto(saved);
     }
@@ -124,10 +126,16 @@ public class VisitServiceImpl implements VisitService {
     }
 
 
-    public List<VisitDto> searchActiveVisitsByVisitorNameOrEmail(String search) {
-        var visits = IteratorUtil.toList(visitRepository.findAll(buildSearchActiveVisitsPredicate(search)));
+    public VisitDto searchActiveVisitByBadgeNumber(String badgeNumber) {
+        var visit = visitRepository.findOne(buildSearchActiveVisitByBadgeNumberPredicate(badgeNumber)).orElseThrow(() -> new ResourceNotFoundException("Oops an error occurred while checking out!"));
+        return visitMapper.mapToVisitDto(visit);
 
-        return visits.stream()
+    }
+
+
+    public List<VisitDto> searchActiveVisitsByVisitorNameOrEmail(String search) {
+        return StreamSupport
+                .stream(visitRepository.findAll(buildSearchActiveVisitsPredicate(search)).spliterator(), false)
                 .map(visitMapper::mapToVisitDto)
                 .collect(Collectors.toList());
     }
@@ -139,6 +147,7 @@ public class VisitServiceImpl implements VisitService {
         return visits
                 .map(visitMapper::mapToVisitDto);
     }
+
 
     public Page<VisitDto> searchPastVisitors(PageRequest pageRequest, LocalDate dateFrom) {
         var visits = visitRepository.findAll(buildSearchPastVisitorsPredicate(dateFrom), pageRequest);
@@ -181,10 +190,12 @@ public class VisitServiceImpl implements VisitService {
         visitExporter.export(response);
     }
 
+
     @Override
     public long countNumberOfVisitsToday() {
         return visitRepository.count(buildCountNumberOfVisitsTodayPredicate());
     }
+
 
     @Override
     public long countNumberOfVisitsYesterday() {
@@ -197,10 +208,12 @@ public class VisitServiceImpl implements VisitService {
         return visitRepository.count(buildCountNumberOfPastMonthVisitsPredicate(today));
     }
 
+
     @Override
     public long countNumberOfPastYearVisits() {
         return visitRepository.count(buildCountNumberOfPastYearVisitsPredicate());
     }
+
 
     @Override
     public List<Long> pastYearVisitorStatistics() {
@@ -224,6 +237,7 @@ public class VisitServiceImpl implements VisitService {
                 sepVisitors, octVisitors, novVisitors, decVisitors)
                 .collect(Collectors.toList());
     }
+
 
     @Override
     public List<Long> currentYearVisitorStatistics() {
@@ -258,6 +272,25 @@ public class VisitServiceImpl implements VisitService {
         predicate
                 .and(qVisit.checkedOut.isNull())
                 .and(qVisit.checkedIn.between(todayStart, todayEnd));
+
+        return predicate;
+    }
+
+
+    private BooleanBuilder buildSearchActiveVisitByBadgeNumberPredicate(String badgeNumber) {
+        var qVisit = QVisit.visit;
+        var predicate = new BooleanBuilder();
+
+        if (Objects.nonNull(badgeNumber)) {
+
+            LocalDateTime todayStart = LocalDate.now().atTime(0, 0, 0);
+            LocalDateTime todayEnd = LocalDate.now().atTime(23, 59, 59);
+
+            predicate
+                    .and(qVisit.badgeNumber.eq(badgeNumber)
+                            .and(qVisit.checkedIn.between(todayStart, todayEnd)
+                                    .and(qVisit.checkedOut.isNull())));
+        }
 
         return predicate;
     }
@@ -377,6 +410,7 @@ public class VisitServiceImpl implements VisitService {
                 .and(qVisit.checkedIn.between(pastYearStart, pastYearYearEnd));
     }
 
+
     private BooleanBuilder buildMonthWith31DaysPredicate(int year, int month) {
         var qVisit = QVisit.visit;
         var predicate = new BooleanBuilder();
@@ -388,6 +422,7 @@ public class VisitServiceImpl implements VisitService {
                 .and(qVisit.checkedIn.between(monthStart, monthEnd));
 
     }
+
 
     private BooleanBuilder buildFebDaysPredicate(int year) {
         var qVisit = QVisit.visit;

@@ -12,7 +12,6 @@ public class TwilioInitializer {
     private final static Logger LOGGER = LoggerFactory.getLogger(TwilioInitializer.class);
     private final TwilioConfig twilioConfig;
 
-    @Autowired
     public TwilioInitializer(TwilioConfig twilioConfig) {
         this.twilioConfig = twilioConfig;
         Twilio.init(

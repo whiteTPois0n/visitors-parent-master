@@ -13,8 +13,11 @@ insert into user (id, username, password, enabled, role_id) values (4, 'Azhar', 
 
 
 --contact tbl data
-insert into contact (id, first_name, last_name, visa, phone_number) values (1, 'Awad' , 'Luckhoo' , 'AWL', '57444444');
+insert into contact (id, first_name, last_name, visa, phone_number) values (1, 'Awad' , 'Luckhoo' , 'MAL', '57621220');
 insert into contact (id, first_name, last_name, visa, phone_number) values (2, 'Kenny', 'Kian Fat', 'WKK', '57725970');
+--insert into contact (id, first_name, last_name, visa, phone_number) values (2, 'Kenny', 'Kian Fat', 'WKK', '57621220');
+
+
 
 
 --visitor tbl data
@@ -87,6 +90,11 @@ insert into visitor (title, first_name, last_name, email, phone_number, address,
 insert into visitor (title, first_name, last_name, email, phone_number, address, organization) values ('Mr', 'Artemus', 'Giral', 'agiral1k@bbc.co.uk', '31449893', '47 Fuller Plaza', 'Voonder');
 insert into visitor (title, first_name, last_name, email, phone_number, address, organization) values ('Ms', 'Dione', 'Criple', 'dcriple1l@g.co', '98678495', '94391 Hoepker Parkway', 'Aimbo');
 insert into visitor (title, first_name, last_name, email, phone_number, address, organization) values ('Mrs', 'Ellie', 'Snadden', 'esnadden1m@samsung.com', '26611544', '81 Hayes Alley', 'Skilith');
+insert into visitor (title, first_name, last_name, email, phone_number, address, organization) values ('Mr', 'Chittesh', 'Conhyea', 'ccy@gmail.com', '97654714', '94391 Flic-En-Flac', null);
+insert into visitor (title, first_name, last_name, email, phone_number, address, organization) values ('Mr', 'Dinesh', 'Doongoor', 'ddo@hotmail.com', '20414253', '81 Laventure', null);
+insert into visitor (title, first_name, last_name, email, phone_number, address, organization) values ('Mr', 'Pranav', 'Seewoodary', 'psy@gmail.com', '54124547', '12 Lescalier', null);
+insert into visitor (title, first_name, last_name, email, phone_number, address, organization) values ('Mr', 'Azhar', 'Hossen Mohamed', 'aah@hotmail.com', '57621220', 'Lot 6B Port Louis', null);
+
 
 
 -- appointment tbl data (PAST APPOINTMENTS)

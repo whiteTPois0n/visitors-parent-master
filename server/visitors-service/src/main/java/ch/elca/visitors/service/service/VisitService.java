@@ -18,6 +18,8 @@ public interface VisitService {
 
     void checkoutVisit(Long visitId, String badgeNumber);
 
+    VisitDto searchActiveVisitByBadgeNumber (String badgeNumber);
+
     List<VisitDto> searchActiveVisitsByVisitorNameOrEmail(String search);
 
     Page<VisitDto> searchActiveVisitors(PageRequest pageRequest);

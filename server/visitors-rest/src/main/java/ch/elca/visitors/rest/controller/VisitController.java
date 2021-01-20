@@ -49,6 +49,12 @@ public class VisitController {
     }
 
 
+    @GetMapping("/search-active-visit")
+    public VisitDto searchActiveVisitByBadgeNumber(@RequestParam String badgeNumber) {
+        return visitService.searchActiveVisitByBadgeNumber(badgeNumber);
+    }
+
+
     @GetMapping("/search-active-visits")
     public List<VisitDto> searchActiveVisitsByVisitorNameOrEmail(@RequestParam(required = false) String search) {
         return visitService.searchActiveVisitsByVisitorNameOrEmail(search);
