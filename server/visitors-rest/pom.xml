@@ -3,6 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <packaging>war</packaging>
 
 
     <parent>
@@ -27,7 +28,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
         <!--    swagger dependency    -->
         <dependency>
             <groupId>io.springfox</groupId>
@@ -56,6 +61,12 @@
             <version>2.3.5.RELEASE</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.2.18</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -78,15 +89,24 @@
                 <configuration>
                     <appName>elca-visitor-management-system</appName>
                     <jdkVersion>11</jdkVersion>
-                    <includeTarget>false</includeTarget>
-                    <includes>
-                        <include>target/visitors-rest-0.0.1-SNAPSHOT.jar</include>
-                    </includes>
+<!--                    <includeTarget>false</includeTarget>-->
+<!--                    <includes>-->
+<!--                        <include>target/visitors-rest-0.0.1-SNAPSHOT.jar</include>-->
+<!--                    </includes>-->
                     <processTypes>
-                        <web>java -jar target/visitors-rest-0.0.1-SNAPSHOT.jar</web>
+                        <web>java -war target/visitors-rest-0.0.1-SNAPSHOT.war</web>
                     </processTypes>
                 </configuration>
             </plugin>
+<!--            <plugin>-->
+<!--                <groupId>com.heroku.sdk</groupId>-->
+<!--                <artifactId>heroku-maven-plugin</artifactId>-->
+<!--                <version>3.0.3</version>-->
+<!--                <configuration>-->
+<!--                <appName>elca-visitor-management-system</appName>-->
+<!--                <jdkVersion>11</jdkVersion>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
         </plugins>
     </build>
 </project>
