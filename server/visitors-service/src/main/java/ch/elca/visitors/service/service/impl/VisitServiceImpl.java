@@ -87,13 +87,13 @@ public class VisitServiceImpl implements VisitService {
         }
 
 //        twilio api send message to host if present
-//        if (Objects.nonNull(visitDto.getContact().getId())) {
-//            contactRepository.findById(visitDto.getContact().getId()).ifPresent(contact -> {
-//                        String message = "Your visitor " + visitDto.getVisitor().getLastName() + " " + visitDto.getVisitor().getFirstName() + " has arrived and is waiting for you in the lobby";
-//                        twilioService.sendSms(contact.getPhoneNumber(), message);
-//                    }
-//            );
-//        }
+        if (Objects.nonNull(visitDto.getContact().getId())) {
+            contactRepository.findById(visitDto.getContact().getId()).ifPresent(contact -> {
+                        String message = "Your visitor " + visitDto.getVisitor().getLastName() + " " + visitDto.getVisitor().getFirstName() + " has arrived and is waiting for you in the lobby";
+                        twilioService.sendSms(contact.getPhoneNumber(), message);
+                    }
+            );
+        }
 
         var saved = visitRepository.save(visit);
 //        var data = saved.getId() + " " + saved.getBadgeNumber();
@@ -258,6 +258,20 @@ public class VisitServiceImpl implements VisitService {
 
         return Stream.of(janVisitors, febVisitors, marVisitors, aprVisitors, mayVisitors, junVisitors, julVisitors, augVisitors,
                 sepVisitors, octVisitors, novVisitors, decVisitors)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Long> peekHourVisitorStatistics() {
+        var interval1 = visitRepository.count(buildPeekHourVisitorStatistics(9, 10));
+        var interval2 = visitRepository.count(buildPeekHourVisitorStatistics(10, 11));
+        var interval3 = visitRepository.count(buildPeekHourVisitorStatistics(11, 12));
+        var interval4 = visitRepository.count(buildPeekHourVisitorStatistics(12, 13));
+        var interval5 = visitRepository.count(buildPeekHourVisitorStatistics(13, 14));
+        var interval6 = visitRepository.count(buildPeekHourVisitorStatistics(14, 15));
+        var interval7 = visitRepository.count(buildPeekHourVisitorStatistics(15, 16));
+
+        return Stream.of(interval1, interval2, interval3, interval4, interval5, interval6, interval7)
                 .collect(Collectors.toList());
     }
 
@@ -447,5 +461,20 @@ public class VisitServiceImpl implements VisitService {
 
         return predicate
                 .and(qVisit.checkedIn.between(monthStart, monthEnd));
+    }
+
+    private BooleanBuilder buildPeekHourVisitorStatistics(int startingHour, int endingHour) {
+
+        var qVisit = QVisit.visit;
+        var predicate = new BooleanBuilder();
+
+
+        LocalDateTime dateTimeStartToday = LocalDate.now().atTime(startingHour, 0, 0);
+        LocalDateTime dateTimeEndToday = LocalDate.now().atTime((startingHour + 1), 0, 0);
+
+
+        return predicate
+                .and(qVisit.checkedIn.between(dateTimeStartToday, dateTimeEndToday));
+
     }
 }

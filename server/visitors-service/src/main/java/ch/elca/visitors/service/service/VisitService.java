@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface VisitService {
@@ -44,5 +45,6 @@ public interface VisitService {
 
     List<Long> currentYearVisitorStatistics();
 
+    List<Long> peekHourVisitorStatistics();
 
 }
