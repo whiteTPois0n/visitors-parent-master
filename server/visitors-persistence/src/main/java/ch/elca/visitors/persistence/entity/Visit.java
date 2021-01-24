@@ -28,7 +28,7 @@ import java.time.LocalDateTime;
 public class Visit extends AuditModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Enumerated(value = EnumType.STRING)

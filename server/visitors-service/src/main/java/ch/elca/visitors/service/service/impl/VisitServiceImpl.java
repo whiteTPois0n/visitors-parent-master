@@ -87,13 +87,13 @@ public class VisitServiceImpl implements VisitService {
         }
 
 //        twilio api send message to host if present
-        if (Objects.nonNull(visitDto.getContact().getId())) {
-            contactRepository.findById(visitDto.getContact().getId()).ifPresent(contact -> {
-                        String message = "Your visitor " + visitDto.getVisitor().getLastName() + " " + visitDto.getVisitor().getFirstName() + " has arrived and is waiting for you in the lobby";
-                        twilioService.sendSms(contact.getPhoneNumber(), message);
-                    }
-            );
-        }
+//        if (Objects.nonNull(visitDto.getContact().getId())) {
+//            contactRepository.findById(visitDto.getContact().getId()).ifPresent(contact -> {
+//                        String message = "Your visitor " + visitDto.getVisitor().getLastName() + " " + visitDto.getVisitor().getFirstName() + " has arrived and is waiting for you in the lobby";
+//                        twilioService.sendSms(contact.getPhoneNumber(), message);
+//                    }
+//            );
+//        }
 
         var saved = visitRepository.save(visit);
 //        var data = saved.getId() + " " + saved.getBadgeNumber();
