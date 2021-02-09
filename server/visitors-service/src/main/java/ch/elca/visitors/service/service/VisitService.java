@@ -1,5 +1,6 @@
 package ch.elca.visitors.service.service;
 
+import ch.elca.visitors.service.dto.CountHoursDto;
 import ch.elca.visitors.service.dto.VisitDto;
 import com.google.zxing.WriterException;
 import org.springframework.data.domain.Page;
@@ -8,7 +9,6 @@ import org.springframework.data.domain.PageRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface VisitService {
@@ -37,7 +37,7 @@ public interface VisitService {
 
     long countNumberOfVisitsYesterday();
 
-    long countNumberOfPastMonthVisits(LocalDate today);
+    long countNumberOfPastMonthVisits();
 
     long countNumberOfPastYearVisits();
 
@@ -45,6 +45,14 @@ public interface VisitService {
 
     List<Long> currentYearVisitorStatistics();
 
-    List<Long> peekHourVisitorStatistics();
+    List<CountHoursDto> candidatesPeekHourVisitsStatistics();
+
+    List<CountHoursDto> customersPeekHourVisitsStatistics();
+
+    List<CountHoursDto> partnersPeekHourVisitsStatistics();
+
+    List<CountHoursDto> providersPeekHourVisitsStatistics();
+
+    List<CountHoursDto> othersPeekHourVisitsStatistics();
 
 }

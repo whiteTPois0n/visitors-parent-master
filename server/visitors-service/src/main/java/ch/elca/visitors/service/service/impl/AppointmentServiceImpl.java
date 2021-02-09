@@ -78,8 +78,8 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
 
-    public List<AppointmentDto> searchAppointmentsByVisitorNameOrEmail(String search) {
-        var appointments = IteratorUtil.toList(appointmentRepository.findAll(buildSearchAppointmentsByVisitor(search)));
+    public List<AppointmentDto> searchFutureAppointmentsByVisitorNameOrEmail(String search) {
+        var appointments = IteratorUtil.toList(appointmentRepository.findAll(buildSearchFutureAppointmentsByVisitor(search)));
 
         return appointments.stream()
                 .map(appointmentMapper::mapToAppointmentDto)
@@ -116,16 +116,18 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
 
-    private BooleanBuilder buildSearchAppointmentsByVisitor(String search) {
+    private BooleanBuilder buildSearchFutureAppointmentsByVisitor(String search) {
         var qAppointment = QAppointment.appointment;
         var predicate = new BooleanBuilder();
+        LocalDateTime today = LocalDate.now().atTime(0, 0, 0);
 
         if (Objects.nonNull(search)) {
 
             predicate
                     .and(qAppointment.visitor.lastName.containsIgnoreCase(search)
                             .or(qAppointment.visitor.firstName.containsIgnoreCase(search)
-                                    .or(qAppointment.visitor.email.containsIgnoreCase(search))));
+                                    .or(qAppointment.visitor.email.containsIgnoreCase(search)))
+                                            .and(qAppointment.appointmentDate.after(today)));
         }
         return predicate;
     }

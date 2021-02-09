@@ -1,5 +1,6 @@
 package ch.elca.visitors.service.service.impl;
 
+import ch.elca.visitors.service.dto.QrDto;
 import ch.elca.visitors.service.service.QrCodeGenService;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
@@ -8,6 +9,7 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
@@ -27,6 +29,21 @@ public class QrCodeGenServiceImpl implements QrCodeGenService {
         /* Save QR as Png to specified path  */
         MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
 
+    }
+
+
+    @Override
+    public byte[] generateQRCodeImage(QrDto qrDto) throws IOException, WriterException {
+
+        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+
+        BitMatrix bitMatrix = qrCodeWriter.encode(qrDto.getText(), BarcodeFormat.QR_CODE, qrDto.getWidth(), qrDto.getHeight());
+
+        ByteArrayOutputStream pngOutputStream = new ByteArrayOutputStream();
+
+        MatrixToImageWriter.writeToStream(bitMatrix, "PNG", pngOutputStream);
+
+        return pngOutputStream.toByteArray();
     }
 
 }

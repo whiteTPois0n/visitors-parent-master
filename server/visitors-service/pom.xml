@@ -156,6 +156,8 @@
                                 <pattern>ch.elca.visitors.service.dto.AppointmentDto</pattern>
                                 <pattern>ch.elca.visitors.service.dto.UserDto</pattern>
                                 <pattern>ch.elca.visitors.service.dto.RegisterDto</pattern>
+                                <pattern>ch.elca.visitors.service.dto.CountHoursDto</pattern>
+                                <pattern>ch.elca.visitors.service.dto.QrDto</pattern>
                             </classPatterns>
                             <mapEnum>asEnum</mapEnum>
                             <mapClasses>asClasses</mapClasses>

@@ -10,7 +10,6 @@ import ch.elca.visitors.service.dto.UserDto;
 import ch.elca.visitors.service.exception.ResourceNotFoundException;
 import ch.elca.visitors.service.mapper.UserMapper;
 import ch.elca.visitors.service.service.UserService;
-import javassist.expr.NewArray;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -43,18 +42,12 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public UserDto getUserRole(String username) {
+    public UserDto login(String username) {
         var qUser = QUser.user;
         var userPredicate = qUser.username.eq(username);
         var user = userRepository.findOne(userPredicate)
                 .orElseThrow(() -> new ResourceNotFoundException("User " + username + " Not Found"));
         return userMapper.mapToUserDto(user);
-    }
-
-
-    @Override
-    public String login() {
-        return "login successful";
     }
 
 }

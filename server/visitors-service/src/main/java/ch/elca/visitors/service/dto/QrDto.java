@@ -1,6 +1,5 @@
 package ch.elca.visitors.service.dto;
 
-import ch.elca.visitors.persistence.enumeration.RoleEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,10 +9,8 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterDto {
-
-    private String username;
-    private String password;
-    private RoleEnum role;
-
+public class QrDto {
+    String text;
+    Integer width;
+    Integer height;
 }

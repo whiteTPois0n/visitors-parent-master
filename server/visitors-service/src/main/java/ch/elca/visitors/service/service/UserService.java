@@ -7,8 +7,6 @@ public interface UserService {
 
     void RegisterUser(RegisterDto registerDto);
 
-    UserDto getUserRole(String username);
-
-    String login();
+    UserDto login(String username);
 
 }

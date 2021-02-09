@@ -2,10 +2,12 @@ package ch.elca.visitors.service.service.impl;
 
 import ch.elca.visitors.persistence.entity.QVisit;
 import ch.elca.visitors.persistence.entity.Visit;
+import ch.elca.visitors.persistence.enumeration.VisitorType;
 import ch.elca.visitors.persistence.repository.AppointmentRepository;
 import ch.elca.visitors.persistence.repository.ContactRepository;
 import ch.elca.visitors.persistence.repository.VisitRepository;
 import ch.elca.visitors.persistence.repository.VisitorRepository;
+import ch.elca.visitors.service.dto.CountHoursDto;
 import ch.elca.visitors.service.dto.VisitDto;
 import ch.elca.visitors.service.excel.VisitExporter;
 import ch.elca.visitors.service.exception.ResourceNotFoundException;
@@ -27,8 +29,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -42,6 +47,8 @@ public class VisitServiceImpl implements VisitService {
     private static final Integer QR_CODE_IMAGE_WIDTH = 120;
     private static final Integer QR_CODE_IMAGE_HEIGHT = 120;
     private static final Logger LOGGER = LoggerFactory.getLogger(TwilioSmsServiceImpl.class);
+    private static final Map<Long, Long> COUNT_HOURS_PER_HOUR_MAP = new HashMap<>();
+
     private final VisitRepository visitRepository;
     private final AppointmentRepository appointmentRepository;
     private final ContactRepository contactRepository;
@@ -50,6 +57,18 @@ public class VisitServiceImpl implements VisitService {
     private final QrCodeGenService qrCodeGenService;
     private final VisitMapper visitMapper;
 //    private final String QR_CODE_IMAGE_PATH = String.valueOf(getClass().getResourceAsStream("/generated"));
+
+    static {
+        COUNT_HOURS_PER_HOUR_MAP.put(9L, 0L);
+        COUNT_HOURS_PER_HOUR_MAP.put(10L, 0L);
+        COUNT_HOURS_PER_HOUR_MAP.put(11L, 0L);
+        COUNT_HOURS_PER_HOUR_MAP.put(12L, 0L);
+        COUNT_HOURS_PER_HOUR_MAP.put(13L, 0L);
+        COUNT_HOURS_PER_HOUR_MAP.put(14L, 0L);
+        COUNT_HOURS_PER_HOUR_MAP.put(15L, 0L);
+        COUNT_HOURS_PER_HOUR_MAP.put(16L, 0L);
+        COUNT_HOURS_PER_HOUR_MAP.put(17L, 0L);
+    }
 
     public VisitDto addVisit(VisitDto visitDto) throws IOException, WriterException {
 
@@ -96,11 +115,13 @@ public class VisitServiceImpl implements VisitService {
 //        }
 
         var saved = visitRepository.save(visit);
-//        var data = saved.getId() + " " + saved.getBadgeNumber();
-        var data = saved.getBadgeNumber();
 
-        qrCodeGenService.generateQrCode(data, QR_CODE_IMAGE_PATH, QR_CODE_IMAGE_WIDTH, QR_CODE_IMAGE_HEIGHT);
-        LOGGER.info("Qr Code generated with badgeId: " + saved.getBadgeNumber());
+//        generate qr image
+//        var data = saved.getId() + " " + saved.getBadgeNumber();
+//        var data = saved.getBadgeNumber();
+//        qrCodeGenService.generateQrCode(data, QR_CODE_IMAGE_PATH, QR_CODE_IMAGE_WIDTH, QR_CODE_IMAGE_HEIGHT);
+//        LOGGER.info("Qr Code generated with badgeId: " + saved.getBadgeNumber());
+
         return visitMapper.mapToVisitDto(saved);
     }
 
@@ -204,8 +225,8 @@ public class VisitServiceImpl implements VisitService {
 
 
     @Override
-    public long countNumberOfPastMonthVisits(LocalDate today) {
-        return visitRepository.count(buildCountNumberOfPastMonthVisitsPredicate(today));
+    public long countNumberOfPastMonthVisits() {
+        return visitRepository.count(buildCountNumberOfPastMonthVisitsPredicate());
     }
 
 
@@ -261,18 +282,109 @@ public class VisitServiceImpl implements VisitService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public List<Long> peekHourVisitorStatistics() {
-        var interval1 = visitRepository.count(buildPeekHourVisitorStatistics(9, 10));
-        var interval2 = visitRepository.count(buildPeekHourVisitorStatistics(10, 11));
-        var interval3 = visitRepository.count(buildPeekHourVisitorStatistics(11, 12));
-        var interval4 = visitRepository.count(buildPeekHourVisitorStatistics(12, 13));
-        var interval5 = visitRepository.count(buildPeekHourVisitorStatistics(13, 14));
-        var interval6 = visitRepository.count(buildPeekHourVisitorStatistics(14, 15));
-        var interval7 = visitRepository.count(buildPeekHourVisitorStatistics(15, 16));
 
-        return Stream.of(interval1, interval2, interval3, interval4, interval5, interval6, interval7)
-                .collect(Collectors.toList());
+    public List<CountHoursDto> candidatesPeekHourVisitsStatistics() {
+        var qVisit = QVisit.visit;
+        var predicate = new BooleanBuilder();
+
+        List<Visit> visits = (List<Visit>) visitRepository.findAll(predicate.and(qVisit.visitorType.eq(VisitorType.CANDIDATE)));
+
+        List<CountHoursDto> countHoursDtos = new ArrayList<>();
+        Map<Long, Long> mapCountHoursPerHours = visits
+                .stream()
+                .map(visit -> visit.getCheckedIn().getHour())
+                .collect(Collectors.groupingBy(Integer::longValue, Collectors.counting()));
+
+        COUNT_HOURS_PER_HOUR_MAP.forEach(mapCountHoursPerHours::putIfAbsent);
+
+        mapCountHoursPerHours.forEach((k, v) -> countHoursDtos.add(new CountHoursDto(k, v)));
+        countHoursDtos.sort(Comparator.comparing(CountHoursDto::getHours));
+
+        return countHoursDtos;
+    }
+
+
+    public List<CountHoursDto> customersPeekHourVisitsStatistics() {
+        var qVisit = QVisit.visit;
+        var predicate = new BooleanBuilder();
+
+        List<Visit> visits = (List<Visit>) visitRepository.findAll(predicate.and(qVisit.visitorType.eq(VisitorType.CUSTOMER)));
+
+        List<CountHoursDto> countHoursDtos = new ArrayList<>();
+        Map<Long, Long> mapCountHoursPerHours = visits
+                .stream()
+                .map(visit -> visit.getCheckedIn().getHour())
+                .collect(Collectors.groupingBy(Integer::longValue, Collectors.counting()));
+
+        COUNT_HOURS_PER_HOUR_MAP.forEach(mapCountHoursPerHours::putIfAbsent);
+
+        mapCountHoursPerHours.forEach((k, v) -> countHoursDtos.add(new CountHoursDto(k, v)));
+        countHoursDtos.sort(Comparator.comparing(CountHoursDto::getHours));
+
+        return countHoursDtos;
+    }
+
+
+    public List<CountHoursDto> partnersPeekHourVisitsStatistics() {
+        var qVisit = QVisit.visit;
+        var predicate = new BooleanBuilder();
+
+        List<Visit> visits = (List<Visit>) visitRepository.findAll(predicate.and(qVisit.visitorType.eq(VisitorType.PARTNER)));
+
+        List<CountHoursDto> countHoursDtos = new ArrayList<>();
+        Map<Long, Long> mapCountHoursPerHours = visits
+                .stream()
+                .map(visit -> visit.getCheckedIn().getHour())
+                .collect(Collectors.groupingBy(Integer::longValue, Collectors.counting()));
+
+        COUNT_HOURS_PER_HOUR_MAP.forEach(mapCountHoursPerHours::putIfAbsent);
+
+        mapCountHoursPerHours.forEach((k, v) -> countHoursDtos.add(new CountHoursDto(k, v)));
+        countHoursDtos.sort(Comparator.comparing(CountHoursDto::getHours));
+
+        return countHoursDtos;
+    }
+
+
+    public List<CountHoursDto> providersPeekHourVisitsStatistics() {
+        var qVisit = QVisit.visit;
+        var predicate = new BooleanBuilder();
+
+        List<Visit> visits = (List<Visit>) visitRepository.findAll(predicate.and(qVisit.visitorType.eq(VisitorType.PROVIDER)));
+
+        List<CountHoursDto> countHoursDtos = new ArrayList<>();
+        Map<Long, Long> mapCountHoursPerHours = visits
+                .stream()
+                .map(visit -> visit.getCheckedIn().getHour())
+                .collect(Collectors.groupingBy(Integer::longValue, Collectors.counting()));
+
+        COUNT_HOURS_PER_HOUR_MAP.forEach(mapCountHoursPerHours::putIfAbsent);
+
+        mapCountHoursPerHours.forEach((k, v) -> countHoursDtos.add(new CountHoursDto(k, v)));
+        countHoursDtos.sort(Comparator.comparing(CountHoursDto::getHours));
+
+        return countHoursDtos;
+    }
+
+
+    public List<CountHoursDto> othersPeekHourVisitsStatistics() {
+        var qVisit = QVisit.visit;
+        var predicate = new BooleanBuilder();
+
+        List<Visit> visits = (List<Visit>) visitRepository.findAll(predicate.and(qVisit.visitorType.eq(VisitorType.OTHER)));
+
+        List<CountHoursDto> countHoursDtos = new ArrayList<>();
+        Map<Long, Long> mapCountHoursPerHours = visits
+                .stream()
+                .map(visit -> visit.getCheckedIn().getHour())
+                .collect(Collectors.groupingBy(Integer::longValue, Collectors.counting()));
+
+        COUNT_HOURS_PER_HOUR_MAP.forEach(mapCountHoursPerHours::putIfAbsent);
+
+        mapCountHoursPerHours.forEach((k, v) -> countHoursDtos.add(new CountHoursDto(k, v)));
+        countHoursDtos.sort(Comparator.comparing(CountHoursDto::getHours));
+
+        return countHoursDtos;
     }
 
 
@@ -389,8 +501,9 @@ public class VisitServiceImpl implements VisitService {
     }
 
 
-    private BooleanBuilder buildCountNumberOfPastMonthVisitsPredicate(LocalDate today) {
+    private BooleanBuilder buildCountNumberOfPastMonthVisitsPredicate() {
 
+        var today = LocalDate.now();
         var qVisit = QVisit.visit;
         var predicate = new BooleanBuilder();
         var month = today.getMonth();

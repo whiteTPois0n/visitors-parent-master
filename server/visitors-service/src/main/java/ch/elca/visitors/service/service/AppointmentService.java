@@ -19,7 +19,7 @@ public interface AppointmentService {
 
     Page<AppointmentDto> getAllAppointments(PageRequest pageRequest);
 
-    List<AppointmentDto> searchAppointmentsByVisitorNameOrEmail(String search);
+    List<AppointmentDto> searchFutureAppointmentsByVisitorNameOrEmail(String search);
 
     Page<AppointmentDto> searchFutureVisitors(PageRequest pageRequest, LocalDate dateTo);
 
