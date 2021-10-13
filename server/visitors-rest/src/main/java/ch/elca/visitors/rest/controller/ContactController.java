@@ -17,7 +17,6 @@ import java.util.List;
 @CrossOrigin()
 public class ContactController {
 
-
     private final ContactService contactService;
 
 

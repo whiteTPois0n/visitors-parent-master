@@ -1,6 +1,7 @@
 package ch.elca.visitors.rest.controller;
 
 import ch.elca.visitors.persistence.entity.QVisit;
+import ch.elca.visitors.service.dto.CountHoursDto;
 import ch.elca.visitors.service.dto.VisitDto;
 import ch.elca.visitors.service.service.VisitService;
 import com.google.zxing.WriterException;
@@ -29,7 +30,6 @@ import java.util.List;
 @CrossOrigin()
 public class VisitController {
 
-
     private final VisitService visitService;
 
 
@@ -45,7 +45,7 @@ public class VisitController {
 
         var qVisit = QVisit.visit;
         return visitService.getAllVisits(PageRequest.of(pageNumber, pageSize, Sort.by(
-                Sort.Direction.ASC, qVisit.checkedIn.getMetadata().getName())));
+                Sort.Direction.DESC, qVisit.checkedIn.getMetadata().getName())));
     }
 
 
@@ -74,7 +74,7 @@ public class VisitController {
 
         var qVisit = QVisit.visit;
         return visitService.searchActiveVisitors(PageRequest.of(pageNumber, pageSize, Sort.by(
-                Sort.Direction.ASC, qVisit.checkedIn.getMetadata().getName())));
+                Sort.Direction.DESC, qVisit.checkedIn.getMetadata().getName())));
     }
 
 
@@ -86,7 +86,7 @@ public class VisitController {
 
         var qVisit = QVisit.visit;
         return visitService.searchPastVisitors(PageRequest.of(pageNumber, pageSize, Sort.by(
-                Sort.Direction.ASC, qVisit.checkedIn.getMetadata().getName())), dateFrom);
+                Sort.Direction.DESC, qVisit.checkedIn.getMetadata().getName())), dateFrom);
     }
 
     @GetMapping("/search-visits/{pageNumber}/{pageSize}")
@@ -96,7 +96,7 @@ public class VisitController {
 
         var qVisit = QVisit.visit;
         return visitService.searchVisitsByVisitorName(PageRequest.of(pageNumber, pageSize, Sort.by(
-                Sort.Direction.ASC, qVisit.checkedIn.getMetadata().getName())), search);
+                Sort.Direction.DESC, qVisit.checkedIn.getMetadata().getName())), search);
     }
 
 
@@ -128,9 +128,8 @@ public class VisitController {
 
 
     @GetMapping("/past-month-visits")
-    public long countNumberOfPastMonthVisits(@RequestParam
-                                             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate today) {
-        return visitService.countNumberOfPastMonthVisits(today);
+    public long countNumberOfPastMonthVisits() {
+        return visitService.countNumberOfPastMonthVisits();
     }
 
 
@@ -148,5 +147,31 @@ public class VisitController {
     public List<Long> currentYearVisitorStatistics() {
         return visitService.currentYearVisitorStatistics();
     }
+
+    @GetMapping("/candidates-peek-hour-visits-statistics")
+    public List<CountHoursDto> candidatesPeekHourVisitStatistics() {
+        return visitService.candidatesPeekHourVisitsStatistics();
+    }
+
+    @GetMapping("/customers-peek-hour-visits-statistics")
+    public List<CountHoursDto> customersPeekHourVisitsStatistics() {
+        return visitService.customersPeekHourVisitsStatistics();
+    }
+
+    @GetMapping("/partners-peek-hour-visits-statistics")
+    public List<CountHoursDto> partnersPeekHourVisitsStatistics() {
+        return visitService.partnersPeekHourVisitsStatistics();
+    }
+
+    @GetMapping("/providers-peek-hour-visits-statistics")
+    public List<CountHoursDto> providersPeekHourVisitsStatistics() {
+        return visitService.providersPeekHourVisitsStatistics();
+    }
+
+    @GetMapping("/others-peek-hour-visits-statistics")
+    public List<CountHoursDto> othersPeekHourVisitsStatistics() {
+        return visitService.othersPeekHourVisitsStatistics();
+    }
+
 }
 

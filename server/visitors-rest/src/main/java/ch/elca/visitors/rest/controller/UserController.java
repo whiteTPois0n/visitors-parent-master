@@ -22,22 +22,16 @@ public class UserController {
     private final UserService userService;
 
 
-    @PostMapping("/signup")
+    @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterDto registerDto) {
         userService.RegisterUser(registerDto);
         return new ResponseEntity<>("Registration successful", HttpStatus.OK);
     }
 
 
-    @GetMapping("/user-role/{username}")
-    public UserDto getUserRole(@PathVariable("username") String username) {
-        return userService.getUserRole(username);
-    }
-
-
-    @GetMapping("/login")
-    public String login() {
-        return userService.login();
+    @GetMapping("/login/{username}")
+    public UserDto login(@PathVariable("username") String username) {
+        return userService.login(username);
     }
 
 

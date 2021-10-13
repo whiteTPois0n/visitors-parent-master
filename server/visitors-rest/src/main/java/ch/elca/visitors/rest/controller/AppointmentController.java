@@ -8,7 +8,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
@@ -30,7 +28,6 @@ import java.util.List;
 @RequestMapping("/appointment")
 @CrossOrigin()
 public class AppointmentController {
-
 
     private final AppointmentService appointmentService;
 
@@ -59,13 +56,13 @@ public class AppointmentController {
 
         var qAppointment = QAppointment.appointment;
         return appointmentService.getAllAppointments(PageRequest.of(pageNumber, pageSize, Sort.by(
-                Sort.Direction.ASC, qAppointment.appointmentDate.getMetadata().getName())));
+                Sort.Direction.DESC, qAppointment.appointmentDate.getMetadata().getName())));
     }
 
 
-    @GetMapping("/search-appointments")
+    @GetMapping("/search-future-appointments")
     public List<AppointmentDto> searchAppointmentsByVisitorNameOrEmail(@RequestParam(required = false) String search) {
-        return appointmentService.searchAppointmentsByVisitorNameOrEmail(search);
+        return appointmentService.searchFutureAppointmentsByVisitorNameOrEmail(search);
     }
 
 
@@ -77,7 +74,7 @@ public class AppointmentController {
 
         var qAppointment = QAppointment.appointment;
         return appointmentService.searchFutureVisitors(PageRequest.of(pageNumber, pageSize, Sort.by(
-                Sort.Direction.ASC, qAppointment.appointmentDate.getMetadata().getName())), dateTo);
+                Sort.Direction.DESC, qAppointment.appointmentDate.getMetadata().getName())), dateTo);
     }
 
 
@@ -88,7 +85,7 @@ public class AppointmentController {
 
         var qAppointment = QAppointment.appointment;
         return appointmentService.searchAppointmentsByVisitorName(PageRequest.of(pageNumber, pageSize, Sort.by(
-                Sort.Direction.ASC, qAppointment.appointmentDate.getMetadata().getName())), search);
+                Sort.Direction.DESC, qAppointment.appointmentDate.getMetadata().getName())), search);
     }
 
     @GetMapping("/future-visitors/export")

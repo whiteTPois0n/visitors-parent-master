@@ -33,8 +33,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.jdbcAuthentication()
                 .dataSource(dataSource)
                 .passwordEncoder(getPasswordEncoder())
-                .usersByUsernameQuery("select username, password, enabled from `user` where username = BINARY ?")
-                .authoritiesByUsernameQuery("select u.username, r.role_name from `user` u inner join `role` r on u.role_id = r.id where u.username = ?")
+                .usersByUsernameQuery("select username, password, enabled from users where username = ?")
+                .authoritiesByUsernameQuery("select u.username, r.role_name from users u inner join role r on u.role_id = r.id where u.username = ?")
                 .rolePrefix("ROLE_");
     }
 
@@ -44,16 +44,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors();
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/login").permitAll()
-                .antMatchers("/user-role/**").permitAll()
-//                .antMatchers("/super-admin/**").hasRole("SUPERADMIN")
-                .antMatchers("/signup").hasAnyRole("SUPERADMIN")
-
-                .antMatchers("/visit/**").hasAnyRole("ADMIN", "HRSTAFF")
-                .antMatchers("/contact/**").hasAnyRole("ADMIN", "HRSTAFF")
-                .antMatchers("/appointment/**").hasAnyRole("ADMIN", "HRSTAFF")
-//                .antMatchers("/**").permitAll()
-//                .anyRequest().permitAll()
+                .antMatchers("/login/**").permitAll()
+                .antMatchers("/register").hasRole("SUPERADMIN")
+                .antMatchers("/visit/**").hasAnyRole("ADMIN", "HRSTAFF", "SUPERADMIN")
+                .antMatchers("/contact/**").hasAnyRole("ADMIN", "HRSTAFF", "SUPERADMIN")
+                .antMatchers("/appointment/**").hasAnyRole("ADMIN", "HRSTAFF", "SUPERADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()
